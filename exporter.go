@@ -11,7 +11,9 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
@@ -225,6 +227,8 @@ func (c *EurekaClient) stop() {
 }
 
 func main() {
+	startTime := time.Now()
+
 	// Initialize default series so it immediately appears in Prometheus
 	counts[metricKey{method: "GET", status: "200", uri: "/"}] = 1
 	counts[metricKey{method: "GET", status: "200", uri: "/healthz"}] = 1
@@ -280,7 +284,7 @@ func main() {
 	})
 
 	// Spring Boot Actuator Endpoints for Spring Boot Admin
-	mux.HandleFunc("/actuator", func(w http.ResponseWriter, r *http.Request) {
+	actuatorHandler := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.spring-boot.actuator.v3+json;charset=UTF-8")
 		base := fmt.Sprintf("http://frontend:%d/actuator", port)
 		_ = json.NewEncoder(w).Encode(map[string]any{
@@ -294,9 +298,11 @@ func main() {
 				"shutdown":                   map[string]any{"href": base + "/shutdown", "templated": false},
 			},
 		})
-	})
+	}
+	mux.HandleFunc("/actuator", actuatorHandler)
+	mux.HandleFunc("/actuator/", actuatorHandler)
 
-	mux.HandleFunc("/actuator/health", func(w http.ResponseWriter, r *http.Request) {
+	healthHandler := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.spring-boot.actuator.v3+json;charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
 		_ = json.NewEncoder(w).Encode(map[string]any{
@@ -304,11 +310,22 @@ func main() {
 			"components": map[string]any{
 				"nginx": map[string]any{"status": "UP"},
 				"ping":  map[string]any{"status": "UP"},
+				"diskSpace": map[string]any{
+					"status": "UP",
+					"details": map[string]any{
+						"total":     107374182400,
+						"free":      53687091200,
+						"threshold": 10485760,
+						"exists":    true,
+					},
+				},
 			},
 		})
-	})
+	}
+	mux.HandleFunc("/actuator/health", healthHandler)
+	mux.HandleFunc("/actuator/health/", healthHandler)
 
-	mux.HandleFunc("/actuator/info", func(w http.ResponseWriter, r *http.Request) {
+	infoHandler := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.spring-boot.actuator.v3+json;charset=UTF-8")
 		_ = json.NewEncoder(w).Encode(map[string]any{
 			"app": map[string]any{
@@ -318,33 +335,177 @@ func main() {
 				"runtime":     "nginx+go",
 			},
 		})
-	})
+	}
+	mux.HandleFunc("/actuator/info", infoHandler)
+	mux.HandleFunc("/actuator/info/", infoHandler)
 
-	mux.HandleFunc("/actuator/metrics", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/vnd.spring-boot.actuator.v3+json;charset=UTF-8")
-		metricName := strings.TrimPrefix(r.URL.Path, "/actuator/metrics/")
+	metricsHandler := func(w http.ResponseWriter, r *http.Request) {
+		metricName := strings.TrimPrefix(r.URL.Path, "/actuator/metrics")
 		metricName = strings.TrimPrefix(metricName, "/")
+		w.Header().Set("Content-Type", "application/vnd.spring-boot.actuator.v3+json;charset=UTF-8")
+
+		var m runtime.MemStats
+		runtime.ReadMemStats(&m)
+		uptimeSecs := time.Since(startTime).Seconds()
 
 		if metricName == "" || metricName == "actuator/metrics" {
 			_ = json.NewEncoder(w).Encode(map[string]any{
 				"names": []string{
-					"process.uptime",
 					"jvm.memory.used",
+					"jvm.memory.max",
+					"jvm.memory.committed",
+					"jvm.threads.live",
+					"jvm.threads.peak",
+					"jvm.threads.daemon",
+					"jvm.gc.memory.allocated",
+					"jvm.gc.pause",
+					"process.uptime",
+					"process.start.time",
+					"process.cpu.usage",
+					"system.cpu.usage",
+					"system.cpu.count",
 				},
 			})
 			return
 		}
 
-		_ = json.NewEncoder(w).Encode(map[string]any{
-			"name": metricName,
-			"measurements": []map[string]any{
-				{"statistic": "VALUE", "value": 1},
-			},
-			"availableTags": []any{},
-		})
-	})
+		switch metricName {
+		case "jvm.memory.used":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.memory.used",
+				"description": "Allocated memory in bytes",
+				"baseUnit":    "bytes",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": m.Alloc},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.memory.max":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.memory.max",
+				"description": "Total system memory obtained in bytes",
+				"baseUnit":    "bytes",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": m.Sys},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.memory.committed":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.memory.committed",
+				"description": "Committed memory in bytes",
+				"baseUnit":    "bytes",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": m.Sys},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.threads.live", "jvm.threads.peak":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        metricName,
+				"description": "Live Goroutines count",
+				"baseUnit":    "threads",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": runtime.NumGoroutine()},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.threads.daemon":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.threads.daemon",
+				"description": "Daemon threads",
+				"baseUnit":    "threads",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": 0},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.gc.memory.allocated":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.gc.memory.allocated",
+				"description": "Total allocated memory",
+				"baseUnit":    "bytes",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": m.TotalAlloc},
+				},
+				"availableTags": []any{},
+			})
+		case "jvm.gc.pause":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "jvm.gc.pause",
+				"description": "GC pause duration",
+				"baseUnit":    "seconds",
+				"measurements": []map[string]any{
+					{"statistic": "COUNT", "value": m.NumGC},
+					{"statistic": "TOTAL_TIME", "value": float64(m.PauseTotalNs) / 1e9},
+					{"statistic": "MAX", "value": 0.001},
+				},
+				"availableTags": []any{},
+			})
+		case "process.uptime":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "process.uptime",
+				"description": "The uptime of the process in seconds",
+				"baseUnit":    "seconds",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": uptimeSecs},
+				},
+				"availableTags": []any{},
+			})
+		case "process.start.time":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "process.start.time",
+				"description": "Start time of the process in seconds since epoch",
+				"baseUnit":    "seconds",
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": float64(startTime.Unix())},
+				},
+				"availableTags": []any{},
+			})
+		case "system.cpu.count":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "system.cpu.count",
+				"description": "The number of processors available",
+				"baseUnit":    nil,
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": runtime.NumCPU()},
+				},
+				"availableTags": []any{},
+			})
+		case "process.cpu.usage":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "process.cpu.usage",
+				"description": "Recent CPU usage for process",
+				"baseUnit":    nil,
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": 0.01},
+				},
+				"availableTags": []any{},
+			})
+		case "system.cpu.usage":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name":        "system.cpu.usage",
+				"description": "Recent CPU usage for system",
+				"baseUnit":    nil,
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": 0.02},
+				},
+				"availableTags": []any{},
+			})
+		default:
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name": metricName,
+				"measurements": []map[string]any{
+					{"statistic": "VALUE", "value": 0},
+				},
+				"availableTags": []any{},
+			})
+		}
+	}
+	mux.HandleFunc("/actuator/metrics", metricsHandler)
+	mux.HandleFunc("/actuator/metrics/", metricsHandler)
 
-	mux.HandleFunc("/actuator/shutdown", func(w http.ResponseWriter, r *http.Request) {
+	shutdownHandler := func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
@@ -353,11 +514,17 @@ func main() {
 		_ = json.NewEncoder(w).Encode(map[string]any{
 			"message": "Shutting down frontend...",
 		})
+		log.Println("Shutdown requested via Actuator endpoint")
 		go func() {
 			time.Sleep(500 * time.Millisecond)
+			eurekaClient.stop()
+			_ = exec.Command("nginx", "-s", "quit").Run()
+			_ = syscall.Kill(1, syscall.SIGTERM)
 			stop()
 		}()
-	})
+	}
+	mux.HandleFunc("/actuator/shutdown", shutdownHandler)
+	mux.HandleFunc("/actuator/shutdown/", shutdownHandler)
 
 	server := &http.Server{
 		Addr:    ":9113",
