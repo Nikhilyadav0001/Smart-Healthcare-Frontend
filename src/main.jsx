@@ -7,7 +7,7 @@ import {
   SignOut, Stethoscope, Sun, UserCircle, UsersThree, WarningCircle, X,
   Key, Lock, Fingerprint, Code, Eye, DownloadSimple, TrendUp,
   ArrowsClockwise, CheckCircle, ChartLineUp, FilePdf, Sliders,
-  Link, ArrowSquareOut, Desktop
+  Link, ArrowSquareOut, Desktop, Envelope
 } from '@phosphor-icons/react';
 import './styles.css';
 
@@ -768,21 +768,21 @@ function AdminDirectLinksPage() {
     {
       title: 'Spring Boot Admin Server',
       port: ':9090',
-      url: 'http://localhost:9090',
+      url: '/admin-server/',
       badge: 'Management',
       desc: 'Centralized administration dashboard for JVM memory pools, thread dumps, active loggers, environment variables, and health probes for all Spring services.'
     },
     {
       title: 'Eureka Service Registry',
       port: ':8761',
-      url: 'http://localhost:8761',
+      url: '/eureka/',
       badge: 'Service Mesh',
       desc: 'Netflix Eureka discovery console detailing registered application instances, lease renewals, Eureka replication status, and instance health metrics.'
     },
     {
       title: 'Mailpit Web Inbox',
       port: ':8025',
-      url: 'http://localhost:8025',
+      url: '/mailpit/',
       badge: 'Email Catcher',
       desc: 'Development SMTP server and web interface capturing user registration verification emails, notification dispatches, and Go-generated PDF attachments.'
     },
@@ -2410,6 +2410,69 @@ function AdminOverviewPage({ admin, setActivePage }) {
             </p>
             <a href="http://localhost:3000/explore?left=%7B%22datasource%22:%22tempo%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
               Inspect Tempo Traces <ArrowSquareOut size={14} />
+            </a>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#10b98118', padding: 8, borderRadius: 8, color: '#10b981', display: 'flex' }}>
+                  <Desktop size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Spring Boot Admin</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Proxy: /admin-server/</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#d1fae5', color: '#065f46' }}>Port :9090</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Real-time JVM heap metrics, thread dumps, dynamic log level controls, and environment configurations.
+            </p>
+            <a href="/admin-server/" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              Launch Admin Server <ArrowSquareOut size={14} />
+            </a>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#6366f118', padding: 8, borderRadius: 8, color: '#6366f1', display: 'flex' }}>
+                  <Link size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Eureka Discovery</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Proxy: /eureka/</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#e0e7ff', color: '#3730a3' }}>Port :8761</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Netflix Eureka service registry detailing all registered microservice instances, replicas, and lease renewals.
+            </p>
+            <a href="/eureka/" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              View Eureka Mesh <ArrowSquareOut size={14} />
+            </a>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#ec489918', padding: 8, borderRadius: 8, color: '#ec4899', display: 'flex' }}>
+                  <Envelope size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Mailpit Web Inbox</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Proxy: /mailpit/</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#fce7f3', color: '#9d174d' }}>Port :8025</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Live inbox capturing registration verification emails, notification dispatches, and Go PDF reports.
+            </p>
+            <a href="/mailpit/" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              Open Mailpit Inbox <ArrowSquareOut size={14} />
             </a>
           </div>
         </div>
