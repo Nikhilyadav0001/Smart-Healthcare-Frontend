@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Build metrics exporter
-FROM golang:1.27-alpine AS exporter-builder
+FROM golang:1.24-alpine AS exporter-builder
 WORKDIR /src
 COPY exporter.go .
 RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /bin/frontend-exporter exporter.go
@@ -19,7 +19,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=exporter-builder /bin/frontend-exporter /bin/frontend-exporter
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 EXPOSE 80
 ENTRYPOINT ["/entrypoint.sh"]
