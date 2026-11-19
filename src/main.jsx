@@ -2336,6 +2336,84 @@ function AdminOverviewPage({ admin, setActivePage }) {
         <MetricCard icon={Key} label="Auth Provider" value="OIDC" trend="RS256 JWT & Token Family" />
         <MetricCard icon={ShieldCheck} label="API Gateway" value="8080" trend="Eureka LB & CORS routing" />
       </div>
+
+      {/* Grafana Observability & Quick Telemetry Section */}
+      <div style={{ marginTop: 28 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <div>
+            <h3 style={{ margin: 0, fontFamily: 'Manrope', fontSize: 18, color: 'var(--ink)' }}>Observability & Telemetry Dashboards</h3>
+            <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--muted)' }}>Direct one-click launch for Grafana, Loki logs, Tempo traces, and Spring Boot Admin.</p>
+          </div>
+          <button className="secondary-button" style={{ padding: '6px 12px', fontSize: 12 }} onClick={() => setActivePage('admin-links')}>
+            View All Swagger & Tool Links <ArrowRight size={14} />
+          </button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#f9731618', padding: 8, borderRadius: 8, color: '#f97316', display: 'flex' }}>
+                  <ChartLineUp size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Grafana Main UI</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Port :3000 · Metrics & Alerting</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#ffedd5', color: '#c2410c' }}>Port :3000</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Centralized dashboards monitoring Prometheus request rates, JVM memory pools, GC pauses, and pod saturation.
+            </p>
+            <a href="http://localhost:3000" target="_blank" rel="noreferrer" className="primary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              Open Grafana Dashboard <ArrowSquareOut size={14} />
+            </a>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#0284c718', padding: 8, borderRadius: 8, color: '#0284c7', display: 'flex' }}>
+                  <ClipboardText size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Loki Distributed Logs</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Via Grafana Explore</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#e0f2fe', color: '#0369a1' }}>OTLP Logs</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Query microservice application logs streamed by Grafana Alloy with correlation IDs and trace context.
+            </p>
+            <a href="http://localhost:3000/explore?left=%7B%22datasource%22:%22loki%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              Explore Loki Logs <ArrowSquareOut size={14} />
+            </a>
+          </div>
+
+          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: '#8b5cf618', padding: 8, borderRadius: 8, color: '#8b5cf6', display: 'flex' }}>
+                  <ShieldCheck size={22} weight="bold" />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Tempo Tracing</h4>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Via Grafana Explore</span>
+                </div>
+              </div>
+              <span className="badge-tag normal" style={{ background: '#ede9fe', color: '#6d28d9' }}>Zipkin / OTLP</span>
+            </div>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
+              Trace end-to-end distributed requests spanning API Gateway, Auth, Profile, Health, and Kafka consumers.
+            </p>
+            <a href="http://localhost:3000/explore?left=%7B%22datasource%22:%22tempo%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+              Inspect Tempo Traces <ArrowSquareOut size={14} />
+            </a>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
