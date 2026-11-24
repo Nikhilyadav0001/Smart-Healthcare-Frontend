@@ -767,70 +767,78 @@ function AdminDirectLinksPage() {
   const adminLinks = [
     {
       title: 'Spring Boot Admin Server',
-      port: ':9090',
+      port: 'Proxy: /admin-server/',
       url: '/admin-server/',
       badge: 'Management',
       desc: 'Centralized administration dashboard for JVM memory pools, thread dumps, active loggers, environment variables, and health probes for all Spring services.'
     },
     {
       title: 'Eureka Service Registry',
-      port: ':8761',
+      port: 'Proxy: /eureka/',
       url: '/eureka/',
       badge: 'Service Mesh',
       desc: 'Netflix Eureka discovery console detailing registered application instances, lease renewals, Eureka replication status, and instance health metrics.'
     },
     {
       title: 'Mailpit Web Inbox',
-      port: ':8025',
+      port: 'Proxy: /mailpit/',
       url: '/mailpit/',
       badge: 'Email Catcher',
       desc: 'Development SMTP server and web interface capturing user registration verification emails, notification dispatches, and Go-generated PDF attachments.'
     },
     {
       title: 'Grafana Observability Stack',
-      port: ':3000',
-      url: 'http://localhost:3000',
+      port: 'Proxy: /grafana/',
+      url: '/grafana/',
       badge: 'Dashboards',
       desc: 'Unified Grafana monitoring dashboards showing Prometheus microservice request rates, Loki distributed OTLP logs, and Tempo distributed traces.'
+    },
+    {
+      title: 'Prometheus Server',
+      port: 'Proxy: /prometheus/',
+      url: '/prometheus/',
+      badge: 'Metrics Engine',
+      desc: 'Direct Prometheus query engine, TSDB time-series metrics, scraping target statuses, and evaluation rules.'
+    },
+    {
+      title: 'Unified Swagger API Hub',
+      port: 'Proxy: /swagger/',
+      url: '/swagger/',
+      badge: 'All Endpoints',
+      desc: 'Centralized interactive Swagger UI portal allowing inspection and testing of all endpoints across all 4 microservices.'
     }
   ];
 
   const swaggerLinks = [
     {
+      service: 'Unified Swagger Hub (All Microservices)',
+      port: 'All Services',
+      url: '/swagger/',
+      endpoints: 'Interactive spec switcher with Auth, Profile, Health, and Prediction endpoints'
+    },
+    {
       service: 'Auth Service',
-      port: ':8081',
-      url: 'http://localhost:8081/swagger-ui/index.html',
-      endpoints: '/auth/register, /auth/login, /auth/refresh, /auth/verify-email, /oauth2/jwks'
+      port: 'Proxy: /swagger/auth/',
+      url: '/swagger/auth/',
+      endpoints: '/auth/register, /auth/verify-email, /auth/login, /ping, /oauth2/jwks'
     },
     {
       service: 'User Profile Service',
-      port: ':8082',
-      url: 'http://localhost:8082/swagger-ui/index.html',
-      endpoints: '/api/v1/users/me, /api/v1/users/{id}, /api/v1/users/assign'
+      port: 'Proxy: /swagger/profile/',
+      url: '/swagger/profile/',
+      endpoints: '/api/v1/users/me, /profiles/me, /ping'
     },
     {
       service: 'Health Data Service',
-      port: ':8083',
-      url: 'http://localhost:8083/swagger-ui/index.html',
-      endpoints: '/api/v1/health/records, /api/v1/health/latest, /api/v1/health/patients/{id}/records'
+      port: 'Proxy: /swagger/health/',
+      url: '/swagger/health/',
+      endpoints: '/api/v1/health/records, /records/{id}, /records/latest, /patients/{id}/records, /ping'
     },
     {
       service: 'Prediction Service',
-      port: ':8085',
-      url: 'http://localhost:8085/swagger-ui/index.html',
-      endpoints: '/api/v1/predictions/models, /api/v1/predictions/predict/all, /api/v1/predictions/{id}/report'
-    },
-    {
-      service: 'Service Template',
-      port: ':8090',
-      url: 'http://localhost:8090/swagger-ui/index.html',
-      endpoints: '/ping, /actuator/health'
-    },
-    {
-      service: 'API Gateway OpenAPI Docs',
-      port: ':8080',
-      url: 'http://localhost:8080/v3/api-docs',
-      endpoints: 'Consolidated OpenAPI aggregate definition across the microservices reactor'
+      port: 'Proxy: /swagger/prediction/',
+      url: '/swagger/prediction/',
+      endpoints: '/api/v1/predictions/predict, /predict/all, /models, /{id}, /report, /history/{patientId}'
     }
   ];
 
@@ -844,7 +852,7 @@ function AdminDirectLinksPage() {
       <div style={{ background: '#eef4f8', border: '1px solid #c9dfec', borderRadius: 12, padding: '16px 20px', margin: '20px 0 24px', display: 'flex', gap: 14, alignItems: 'center' }}>
         <ShieldCheck size={26} color="#1f6597" weight="bold" />
         <div style={{ fontSize: 13, color: '#16486c', lineHeight: 1.5 }}>
-          <strong>Zero-Trust Ingress Boundary:</strong> Cloudflare Tunnel securely publishes only the application web interface (Nginx on port 80). Internal infrastructure consoles (Grafana, Eureka, Mailpit, Spring Boot Admin) remain safely isolated on local host ports for defense-in-depth security.
+          <strong>Reverse Proxy Ingress Gateway:</strong> All microservices, developer consoles (Grafana, Eureka, Mailpit, Spring Boot Admin), and OpenAPI Swagger documentation are securely proxied through Nginx on Port 80 and fully accessible from other devices via your domain.
         </div>
       </div>
 
@@ -2358,15 +2366,15 @@ function AdminOverviewPage({ admin, setActivePage }) {
                 </div>
                 <div>
                   <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>Grafana Main UI</h4>
-                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Port :3000 · Metrics & Alerting</span>
+                  <span style={{ fontSize: 11, color: 'var(--muted)' }}>Proxy: /grafana/ · Metrics & Alerting</span>
                 </div>
               </div>
-              <span className="badge-tag normal" style={{ background: '#ffedd5', color: '#c2410c' }}>Port :3000</span>
+              <span className="badge-tag normal" style={{ background: '#ffedd5', color: '#c2410c' }}>Proxy /grafana/</span>
             </div>
             <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
               Centralized dashboards monitoring Prometheus request rates, JVM memory pools, GC pauses, and pod saturation.
             </p>
-            <a href="http://localhost:3000" target="_blank" rel="noreferrer" className="primary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+            <a href="/grafana/" target="_blank" rel="noreferrer" className="primary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
               Open Grafana Dashboard <ArrowSquareOut size={14} />
             </a>
           </div>
@@ -2387,7 +2395,7 @@ function AdminOverviewPage({ admin, setActivePage }) {
             <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
               Query microservice application logs streamed by Grafana Alloy with correlation IDs and trace context.
             </p>
-            <a href="http://localhost:3000/explore?left=%7B%22datasource%22:%22loki%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+            <a href="/grafana/explore?left=%7B%22datasource%22:%22loki%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
               Explore Loki Logs <ArrowSquareOut size={14} />
             </a>
           </div>
@@ -2408,7 +2416,7 @@ function AdminOverviewPage({ admin, setActivePage }) {
             <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
               Trace end-to-end distributed requests spanning API Gateway, Auth, Profile, Health, and Kafka consumers.
             </p>
-            <a href="http://localhost:3000/explore?left=%7B%22datasource%22:%22tempo%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
+            <a href="/grafana/explore?left=%7B%22datasource%22:%22tempo%22%7D" target="_blank" rel="noreferrer" className="secondary-button" style={{ justifyContent: 'center', textDecoration: 'none', padding: '8px 12px', fontSize: 12, marginTop: 'auto' }}>
               Inspect Tempo Traces <ArrowSquareOut size={14} />
             </a>
           </div>
@@ -2491,11 +2499,11 @@ function AdminClusterPage() {
     { name: 'User Profile Service', port: '8082', url: '/api/v1/users/me', type: 'MariaDB CRUD', status: 'checking', latency: '—' },
     { name: 'Health Data Service', port: '8083', url: '/api/health/ping', type: 'MongoDB rs0', status: 'checking', latency: '—' },
     { name: 'Prediction Service', port: '8085', url: '/api/predictions/models', type: 'ML Inference Engine', status: 'checking', latency: '—' },
-    { name: 'Go Service', port: '8086 / 9095', url: 'http://localhost:8086/healthz', type: 'gRPC & Mailer', status: 'checking', latency: '—' },
-    { name: 'Eureka Discovery', port: '8761', url: 'http://localhost:8761', type: 'Service Registry', status: 'checking', latency: '—' },
-    { name: 'Config Server', port: '8888', url: 'http://localhost:8888/actuator/health', type: 'Cloud Config Repo', status: 'checking', latency: '—' },
-    { name: 'Spring Boot Admin', port: '9090', url: 'http://localhost:9090', type: 'Admin Server', status: 'checking', latency: '—' },
-    { name: 'Mailpit Web UI', port: '8025 / 1025', url: 'http://localhost:8025', type: 'SMTP Catcher', status: 'checking', latency: '—' },
+    { name: 'Go Service', port: '8086 / 9095', url: '/healthz', type: 'gRPC & Mailer', status: 'checking', latency: '—' },
+    { name: 'Eureka Discovery', port: '8761', url: '/eureka/', type: 'Service Registry', status: 'checking', latency: '—' },
+    { name: 'Config Server', port: '8888', url: '/actuator/health', type: 'Cloud Config Repo', status: 'checking', latency: '—' },
+    { name: 'Spring Boot Admin', port: '9090', url: '/admin-server/', type: 'Admin Server', status: 'checking', latency: '—' },
+    { name: 'Mailpit Web UI', port: '8025 / 1025', url: '/mailpit/', type: 'SMTP Catcher', status: 'checking', latency: '—' },
     { name: 'Frontend Service', port: '5173 / 80', url: '/healthz', type: 'React Vite Nginx', status: 'checking', latency: '—' },
   ]);
   const [checking, setChecking] = useState(false);

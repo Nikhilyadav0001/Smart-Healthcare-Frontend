@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Healthcare - Microservices Swagger API Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .hub-header {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .hub-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .hub-title span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hub-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .hub-link {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      background: rgba(255,255,255,0.05);
+    }
+    .hub-link:hover {
+      color: #38bdf8;
+      background: rgba(56,189,248,0.1);
+    }
+    .hub-link.primary {
+      color: #38bdf8;
+      background: rgba(56,189,248,0.15);
+      border: 1px solid rgba(56,189,248,0.3);
+    }
+    .swagger-ui .topbar {
+      background: #1e293b;
+      padding: 10px 0;
+    }
+    .swagger-ui .topbar .download-url-wrapper input[type=text] {
+      border: 2px solid #38bdf8;
+      border-radius: 6px 0 0 6px;
+    }
+    .swagger-ui .topbar .download-url-wrapper .download-url-button {
+      background: #0284c7;
+      border-radius: 0 6px 6px 0;
+    }
+    .swagger-ui select {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #38bdf8;
+      background: #0f172a;
+      color: #f8fafc;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .service-selector-bar {
+      background: #e2e8f0;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #334155;
+    }
+    .service-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #1e293b;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .service-btn:hover {
+      background: #0284c7;
+      color: #fff;
+      border-color: #0284c7;
+    }
+  </style>
+</head>
+<body>
+  <header class="hub-header">
+    <div class="hub-title">
+      <span>Smart Healthcare API Hub</span>
+    </div>
+    <nav class="hub-links">
+      <a class="hub-link primary" href="/">← Main Application</a>
+      <a class="hub-link" href="/admin-server/" target="_blank">Spring Boot Admin ↗</a>
+      <a class="hub-link" href="/eureka/" target="_blank">Eureka Discovery ↗</a>
+      <a class="hub-link" href="/grafana/" target="_blank">Grafana Dashboards ↗</a>
+      <a class="hub-link" href="/mailpit/" target="_blank">Mailpit Inbox ↗</a>
+    </nav>
+  </header>
+
+  <div class="service-selector-bar">
+    <strong>Direct Service Swagger UIs:</strong>
+    <a class="service-btn" href="/swagger/auth/" target="_blank">🔐 Auth (8081)</a>
+    <a class="service-btn" href="/swagger/profile/" target="_blank">👤 User Profile (8082)</a>
+    <a class="service-btn" href="/swagger/health/" target="_blank">💓 Health Data (8083)</a>
+    <a class="service-btn" href="/swagger/prediction/" target="_blank">🧠 ML Prediction (8085)</a>
+  </div>
+
+  <div id="swagger-ui"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-standalone-preset.js" crossorigin></script>
+  <script>
+    window.onload = function() {
+      window.ui = SwaggerUIBundle({
+        urls: [
+          { url: "/swagger/auth/v3/api-docs", name: "🔐 Auth Service (Port 8081)" },
+          { url: "/swagger/profile/v3/api-docs", name: "👤 User Profile Service (Port 8082)" },
+          { url: "/swagger/health/v3/api-docs", name: "💓 Health Data Service (Port 8083)" },
+          { url: "/swagger/prediction/v3/api-docs", name: "🧠 Prediction Service (Port 8085)" }
+        ],
+        "urls.primaryName": "🔐 Auth Service (Port 8081)",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
+      });
+    };
+  </script>
+</body>
+</html>
