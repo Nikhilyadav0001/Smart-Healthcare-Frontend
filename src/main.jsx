@@ -439,18 +439,29 @@ function PublicRegisterPage({ onLogin, onRegistered, onBackHome }) {
               </div>
               <h3 style={{ margin: '0 0 8px' }}>Registration Completed!</h3>
               <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.5, margin: '0 0 20px' }}>
-                Your account for <strong>{formData.email}</strong> has been successfully created. You can now sign in to access your care portal.
+                Your account for <strong>{formData.email}</strong> has been created. A verification email has been dispatched with an activation link. You can view it in <strong>Mailpit</strong> (at <code>/mailpit/</code> or port 8025). Please verify your email before signing in.
               </p>
-              <button
-                className="primary-button"
-                style={{ width: '100%', justifyContent: 'center' }}
-                onClick={() => {
-                  if (onRegistered) onRegistered(formData);
-                  else onLogin();
-                }}
-              >
-                Proceed to Sign In <ArrowRight size={16} />
-              </button>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <a
+                  href="/mailpit/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="secondary-button"
+                  style={{ flex: 1, justifyContent: 'center', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+                >
+                  Open Mailpit
+                </a>
+                <button
+                  className="primary-button"
+                  style={{ flex: 1, justifyContent: 'center' }}
+                  onClick={() => {
+                    if (onRegistered) onRegistered(formData);
+                    else onLogin();
+                  }}
+                >
+                  Sign In <ArrowRight size={16} />
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -576,6 +587,9 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [verifiedBanner, setVerifiedBanner] = useState(() => {
+    return typeof window !== 'undefined' && window.location.search.includes('verified=true');
+  });
 
   const handleSocialLogin = (provider) => {
     // Navigate directly to the real Google/GitHub OAuth2 authorization endpoint
@@ -604,8 +618,8 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
 
       // If backend responded with an error (e.g. 403 unverified email, 401 invalid password)
       const errData = await res.json().catch(() => null);
-      if (errData && errData.error) {
-        setError(errData.error);
+      if (errData && (errData.message || errData.error)) {
+        setError(errData.message || errData.error);
         return;
       }
 
@@ -618,19 +632,16 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
         onLoginSuccess(PERSONAS.DOCTOR);
         return;
       }
-      if (email === 'maya.shah@example.com' || email === 'patient' || email.includes('@')) {
-        onLoginSuccess({
-          ...PERSONAS.PATIENT,
-          email: email.includes('@') ? email : 'maya.shah@example.com',
-          name: email.split('@')[0].replace('.', ' ')
-        });
+      if (email === 'maya.shah@example.com' || email === 'patient') {
+        onLoginSuccess(PERSONAS.PATIENT);
         return;
       }
 
       throw new Error('Invalid email or password. You can also use the 1-Click Demo Profiles below.');
     } catch (err) {
-      // Fallback for seamless testing
-      if (email === 'admin@smarthealth.internal' || email === 'admin') {
+      if (err.message && err.message.includes('Account email is not verified')) {
+        setError(err.message);
+      } else if (email === 'admin@smarthealth.internal' || email === 'admin') {
         onLoginSuccess(PERSONAS.ADMIN);
       } else if (email === 'dr.amelia.morgan@smarthealth.org' || email === 'doctor') {
         onLoginSuccess(PERSONAS.DOCTOR);
@@ -660,9 +671,22 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
           <p className="auth-subtitle">Access your clinical dashboard, longitudinal records, and AI risk engines.</p>
 
           <form onSubmit={handleStandardLogin} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {verifiedBanner && (
+              <div style={{ padding: 12, borderRadius: 8, background: '#e5f6ee', color: '#18794e', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <CheckCircle size={18} weight="bold" />
+                <span>Email verified successfully! You can now sign in with your credentials.</span>
+              </div>
+            )}
             {error && (
-              <div style={{ padding: 12, borderRadius: 8, background: '#fbeee9', color: '#b9381e', fontSize: 13 }}>
+              <div style={{ padding: 12, borderRadius: 8, background: '#fbeee9', color: '#b9381e', fontSize: 13, lineHeight: 1.5 }}>
                 {error}
+                {(error.toLowerCase().includes('mailpit') || error.toLowerCase().includes('verif')) && (
+                  <div style={{ marginTop: 8 }}>
+                    <a href="/mailpit/" target="_blank" rel="noreferrer" style={{ color: '#0f766e', fontWeight: 600, textDecoration: 'underline' }}>
+                      Open Mailpit Inbox to activate account &rarr;
+                    </a>
+                  </div>
+                )}
               </div>
             )}
 
@@ -3031,8 +3055,8 @@ function App() {
       return (
         <PublicRegisterPage
           onLogin={() => setPublicPage('login')}
-          onRegistered={(user) => {
-            handleLoginSuccess({ ...user, role: user.role || 'PATIENT' });
+          onRegistered={() => {
+            setPublicPage('login');
           }}
           onBackHome={() => setPublicPage('home')}
         />
