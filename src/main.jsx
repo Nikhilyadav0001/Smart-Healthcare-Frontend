@@ -578,21 +578,8 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
   const [error, setError] = useState(null);
 
   const handleSocialLogin = (provider) => {
-    setLoading(true);
-    setError(null);
-    setTimeout(() => {
-      onLoginSuccess({
-        role: 'PATIENT',
-        email: `consumer.${provider.toLowerCase()}@smarthealth.org`,
-        name: `${provider} User`,
-        firstName: provider === 'Google' ? 'Google User' : 'GitHub User',
-        initials: provider[0],
-        title: 'Personal Health Records & Risk Tracking',
-        badgeClass: 'patient',
-        assignedDoctor: 'Dr. Amelia Morgan, MD'
-      });
-      setLoading(false);
-    }, 600);
+    // Navigate directly to the real Google/GitHub OAuth2 authorization endpoint
+    window.location.href = `/oauth2/authorization/${provider.toLowerCase()}`;
   };
 
   const handleStandardLogin = async (e) => {
@@ -2913,29 +2900,43 @@ function App() {
   const [activePage, setActivePage] = useState('overview');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  // Check live session from API Gateway BFF
+  // Check live session from auth-service / gateway
   const loadSession = async () => {
     try {
-      const response = await fetch('/api/me', { credentials: 'include' });
-      if (response.status === 401 || response.status === 403) {
+      let authUser = null;
+      try {
+        const authRes = await fetch('/auth/me', { credentials: 'include' });
+        if (authRes.ok) {
+          authUser = await authRes.json();
+        }
+      } catch {}
+
+      if (!authUser) {
+        try {
+          const response = await fetch('/api/me', { credentials: 'include' });
+          if (response.ok) {
+            authUser = await response.json();
+          }
+        } catch {}
+      }
+
+      if (!authUser) {
         setSession({ state: 'unauthenticated', user: null, error: null });
         return;
       }
-      if (!response.ok) throw new Error('Gateway session check returned status ' + response.status);
-      const user = await response.json();
 
       let detectedRole = 'PATIENT';
-      if (user.roles?.includes('ADMIN')) detectedRole = 'ADMIN';
-      else if (user.roles?.includes('DOCTOR')) detectedRole = 'DOCTOR';
+      if (authUser.roles?.includes('ADMIN') || authUser.role === 'ADMIN') detectedRole = 'ADMIN';
+      else if (authUser.roles?.includes('DOCTOR') || authUser.role === 'DOCTOR') detectedRole = 'DOCTOR';
 
       setActiveRole(detectedRole);
       setSession({
         state: 'authenticated',
         user: {
           ...PERSONAS[detectedRole],
-          ...user,
-          name: user.fullName || user.email || PERSONAS[detectedRole].name,
-          firstName: user.fullName ? user.fullName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User')
+          ...authUser,
+          name: authUser.fullName || authUser.name || authUser.email || PERSONAS[detectedRole].name,
+          firstName: authUser.fullName ? authUser.fullName.split(' ')[0] : (authUser.name ? authUser.name.split(' ')[0] : (authUser.email ? authUser.email.split('@')[0] : 'User'))
         },
         error: null
       });
