@@ -1618,3 +1618,138 @@ h2 { margin-bottom: 0; font-size: 20px; line-height: 1.2; font-weight: 700; }
   .admin-direct-links-grid { grid-template-columns: 1fr; }
   .recommendations-card-grid { grid-template-columns: 1fr; }
 }
+
+
+/* ==========================================================================
+   CONSUMER SOCIAL LOGIN & HOW IT WORKS STYLES
+   ========================================================================== */
+
+.social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0 16px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.social-divider::before {
+  margin-right: 12px;
+}
+
+.social-divider::after {
+  margin-left: 12px;
+}
+
+.social-login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.social-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+}
+
+.social-btn.google:hover {
+  border-color: #4285f4;
+  background: #f8fbff;
+}
+
+.social-btn.github {
+  background: #24292f;
+  color: #ffffff;
+  border-color: #24292f;
+}
+
+.social-btn.github:hover {
+  background: #1b1f23;
+  border-color: #1b1f23;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.how-it-works-step {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: left;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.how-it-works-step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  border-color: var(--teal);
+}
+
+.how-it-works-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--mint);
+  color: var(--teal-dark);
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.how-it-works-step h3 {
+  font-size: 17px;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.how-it-works-step p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .how-it-works-grid {
+    grid-template-columns: 1fr;
+  }
+}

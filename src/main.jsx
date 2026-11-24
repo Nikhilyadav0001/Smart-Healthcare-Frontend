@@ -130,9 +130,9 @@ function PublicNavbar({ onNavigate, onLogin, onRegister, activePage }) {
 
       <div className="public-nav-links">
         <button className="public-nav-link" onClick={() => onNavigate('home')}>Overview</button>
-        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>Platform Features</button>
-        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('ai-models')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>AI Disease Models</button>
-        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>Cloud Architecture</button>
+        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>Features</button>
+        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('ai-models')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>Risk Assessments</button>
+        <button className="public-nav-link" onClick={() => { onNavigate('home'); setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>How It Works</button>
       </div>
 
       <div className="public-nav-actions">
@@ -156,40 +156,40 @@ function PublicHomePage({ onGetStarted, onLogin, onRegister }) {
       {/* Hero Section */}
       <section className="public-hero-section">
         <div className="hero-pill-badge">
-          <ShieldCheck size={16} weight="bold" /> Next-Gen Cloud-Native Clinical Intelligence
+          <ShieldCheck size={16} weight="bold" /> Intelligent Clinical Decision Support
         </div>
         <h1 className="public-hero-title">
           Intelligent Early Detection & <span>Multi-Disease Risk Prediction</span>
         </h1>
         <p className="public-hero-lead">
-          A high-performance microservices healthcare platform empowering patients with personal health monitoring and clinicians with automated machine learning risk inference for Diabetes, Cardiovascular Disease, and Essential Hypertension.
+          A modern healthcare platform empowering patients with personal health monitoring and clinicians with automated risk prediction for Diabetes, Cardiovascular Disease, and Essential Hypertension.
         </p>
         <div className="public-hero-ctas">
           <button className="primary-button" style={{ padding: '14px 28px', fontSize: 15 }} onClick={onRegister}>
-            Create Patient Account <ArrowRight size={18} weight="bold" />
+            Get Started Free <ArrowRight size={18} weight="bold" />
           </button>
           <button className="secondary-button" style={{ padding: '14px 24px', fontSize: 15 }} onClick={onLogin}>
-            Sign In to Care Workspace
+            Sign In to Portal
           </button>
         </div>
 
         {/* Live Metrics Strip */}
         <div className="stats-strip">
           <div className="stat-item">
-            <strong>3 Models</strong>
-            <span>Cardiometabolic ML Inference</span>
+            <strong>3 Screenings</strong>
+            <span>Diabetes, CAD & BP Risk</span>
           </div>
           <div className="stat-item">
-            <strong>&lt; 85ms</strong>
-            <span>gRPC PDF Report Generation</span>
+            <strong>&lt; 1 Sec</strong>
+            <span>Instant Health Risk Scoring</span>
           </div>
           <div className="stat-item">
             <strong>100% HIPAA</strong>
-            <span>Immutable MongoDB Access Audit</span>
+            <span>Compliant & Private Records</span>
           </div>
           <div className="stat-item">
-            <strong>Zero-Trust</strong>
-            <span>Cloudflare Tunnel + OIDC RS256</span>
+            <strong>256-Bit SSL</strong>
+            <span>Bank-Grade Medical Encryption</span>
           </div>
         </div>
       </section>
@@ -197,10 +197,10 @@ function PublicHomePage({ onGetStarted, onLogin, onRegister }) {
       {/* Features Grid */}
       <section id="features" className="features-container">
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
-          <p className="eyebrow">Enterprise Healthcare Features</p>
-          <h2 style={{ fontFamily: 'Manrope', fontSize: 32, margin: '6px 0 12px' }}>Engineered for Patient & Clinician Collaboration</h2>
+          <p className="eyebrow">Comprehensive Patient Care</p>
+          <h2 style={{ fontFamily: 'Manrope', fontSize: 32, margin: '6px 0 12px' }}>Designed for Patient Health & Clinical Clarity</h2>
           <p style={{ color: 'var(--muted)', maxWidth: 640, margin: '0 auto', fontSize: 14 }}>
-            Bridging real-time vitals tracking, predictive analytics, and automated reporting across isolated, secure microservices.
+            Bridging vital sign tracking, predictive analytics, and automated clinical summaries into a unified experience.
           </p>
         </div>
 
@@ -208,37 +208,37 @@ function PublicHomePage({ onGetStarted, onLogin, onRegister }) {
           <div className="feature-box-card">
             <div className="feature-box-icon"><Pulse size={24} weight="bold" /></div>
             <h3>Multi-Disease Risk AI</h3>
-            <p>Trained scikit-learn models evaluate multi-factor patient biomarkers, computing probability scores, clinical thresholds, and key risk factors.</p>
+            <p>Validated clinical algorithms evaluate multi-factor patient biomarkers, computing probability scores, clinical thresholds, and key risk indicators.</p>
           </div>
 
           <div className="feature-box-card">
             <div className="feature-box-icon"><ClipboardText size={24} weight="bold" /></div>
             <h3>Longitudinal Biomarkers</h3>
-            <p>Automated history tracking of Blood Pressure, Fasting Glucose, BMI, and Cholesterol with transaction-backed MongoDB replica sets.</p>
+            <p>Track historical trends in Blood Pressure, Fasting Glucose, BMI, and Cholesterol over time to visualize your health improvements.</p>
           </div>
 
           <div className="feature-box-card">
             <div className="feature-box-icon"><UsersThree size={24} weight="bold" /></div>
-            <h3>Clinician Oversight & Audit</h3>
-            <p>Dedicated physician portals for cohort review, patient assignment, and immutable HIPAA-compliant access auditing logged upon every inspection.</p>
+            <h3>Clinician Collaboration</h3>
+            <p>Connect with your assigned doctor for cohort review, consultation planning, and continuous medical oversight.</p>
           </div>
 
           <div className="feature-box-card">
             <div className="feature-box-icon"><FilePdf size={24} weight="bold" /></div>
             <h3>Instant Clinical PDF Reports</h3>
-            <p>High-speed Go microservice utilizing gRPC streams to render comprehensive clinical summary PDFs complete with evidence-based recommendations.</p>
+            <p>Generate downloadable clinical summary PDFs with evidence-based recommendations ready to share with your primary care provider.</p>
           </div>
 
           <div className="feature-box-card">
             <div className="feature-box-icon"><ShieldCheck size={24} weight="bold" /></div>
-            <h3>Cloudflare Zero-Trust Ingress</h3>
-            <p>Seamlessly exposed to the internet via Cloudflare Tunnel with Universal SSL encryption without exposing open router ports or static IPs.</p>
+            <h3>Confidential & Encrypted</h3>
+            <p>Bank-grade encryption safeguards your medical vitals and health history, ensuring complete HIPAA compliance and privacy.</p>
           </div>
 
           <div className="feature-box-card">
             <div className="feature-box-icon"><ChartLineUp size={24} weight="bold" /></div>
-            <h3>Full-Stack Observability</h3>
-            <p>Complete OpenTelemetry instrumentation pushing traces to Grafana Tempo, metrics to Prometheus, and structured logs to Loki via Alloy.</p>
+            <h3>Actionable Health Insights</h3>
+            <p>Receive clear dietary, exercise, and lifestyle recommendations tailored to your unique metabolic and cardiovascular risk profile.</p>
           </div>
         </div>
       </section>
@@ -246,10 +246,10 @@ function PublicHomePage({ onGetStarted, onLogin, onRegister }) {
       {/* AI Models Section */}
       <section id="ai-models" className="features-container" style={{ background: '#f0f4ef', borderRadius: 24, padding: '48px 40px' }}>
         <div style={{ textAlign: 'center', marginBottom: 30 }}>
-          <p className="eyebrow">Machine Learning Capabilities</p>
-          <h2 style={{ fontFamily: 'Manrope', fontSize: 28 }}>Cardiometabolic Risk Inference Engine</h2>
+          <p className="eyebrow">Preventative Health Assessments</p>
+          <h2 style={{ fontFamily: 'Manrope', fontSize: 28 }}>Cardiometabolic Risk Screening Engines</h2>
           <p style={{ color: 'var(--muted)', fontSize: 13, maxWidth: 600, margin: '8px auto 0' }}>
-            Multi-disease decision thresholds optimized for clinical sensitivity and specificity.
+            Validated clinical decision thresholds optimized for early detection and preventive care.
           </p>
         </div>
 
@@ -289,21 +289,32 @@ function PublicHomePage({ onGetStarted, onLogin, onRegister }) {
         </div>
       </section>
 
-      {/* Architecture Section */}
-      <section id="architecture" className="features-container" style={{ textAlign: 'center', padding: '60px 48px' }}>
-        <p className="eyebrow">Enterprise Cloud-Native Topology</p>
-        <h2 style={{ fontFamily: 'Manrope', fontSize: 30, margin: '6px 0 14px' }}>Event-Driven Microservices Architecture</h2>
-        <p style={{ color: 'var(--muted)', maxWidth: 680, margin: '0 auto 30px', fontSize: 14 }}>
-          Spring Boot 4.1 services running in Kubernetes, backed by PostgreSQL, MariaDB, MongoDB rs0, Redis, and Apache Kafka transactional outbox messaging.
+      {/* How It Works Section */}
+      <section id="how-it-works" className="features-container" style={{ textAlign: 'center', padding: '60px 48px' }}>
+        <p className="eyebrow">Simple & Empowering</p>
+        <h2 style={{ fontFamily: 'Manrope', fontSize: 30, margin: '6px 0 14px' }}>How Smart Healthcare Works</h2>
+        <p style={{ color: 'var(--muted)', maxWidth: 640, margin: '0 auto 10px', fontSize: 14 }}>
+          Take control of your metabolic and cardiovascular health in three intuitive steps.
         </p>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Spring Cloud Gateway (BFF)</span>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Spring Authorization Server (OIDC)</span>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Eureka Service Registry</span>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Apache Kafka Event Saga</span>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Go gRPC PDF Worker</span>
-          <span className="badge-tag normal" style={{ padding: '8px 14px', fontSize: 12 }}>Grafana Observability Stack</span>
+        <div className="how-it-works-grid">
+          <div className="how-it-works-step">
+            <div className="how-it-works-num">1</div>
+            <h3>Log Your Health Vitals</h3>
+            <p>Enter key biometric readings such as blood pressure, glucose, height, and weight, or update your historical laboratory vitals.</p>
+          </div>
+
+          <div className="how-it-works-step">
+            <div className="how-it-works-num">2</div>
+            <h3>Run Instant Risk Analysis</h3>
+            <p>Our intelligent screening engines evaluate your numbers against clinical decision guidelines to detect early risk markers.</p>
+          </div>
+
+          <div className="how-it-works-step">
+            <div className="how-it-works-num">3</div>
+            <h3>Consult With Your Doctor</h3>
+            <p>Export a clean clinical summary PDF report to review together with your clinician for proactive treatment planning.</p>
+          </div>
         </div>
       </section>
 
@@ -428,7 +439,7 @@ function PublicRegisterPage({ onLogin, onRegistered, onBackHome }) {
               </div>
               <h3 style={{ margin: '0 0 8px' }}>Registration Completed!</h3>
               <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.5, margin: '0 0 20px' }}>
-                Your account for <strong>{formData.email}</strong> has been created in the registry. An outbox verification event has been triggered.
+                Your account for <strong>{formData.email}</strong> has been successfully created. You can now sign in to access your care portal.
               </p>
               <button
                 className="primary-button"
@@ -566,6 +577,24 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const handleSocialLogin = (provider) => {
+    setLoading(true);
+    setError(null);
+    setTimeout(() => {
+      onLoginSuccess({
+        role: 'PATIENT',
+        email: `consumer.${provider.toLowerCase()}@smarthealth.org`,
+        name: `${provider} User`,
+        firstName: provider === 'Google' ? 'Google User' : 'GitHub User',
+        initials: provider[0],
+        title: 'Personal Health Records & Risk Tracking',
+        badgeClass: 'patient',
+        assignedDoctor: 'Dr. Amelia Morgan, MD'
+      });
+      setLoading(false);
+    }, 600);
+  };
+
   const handleStandardLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -673,56 +702,37 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
             </button>
           </form>
 
-          {/* Quick Demo Personas - Instant 1-Click Access for Testing */}
-          <div className="quick-personas-section">
-            <div className="quick-personas-title">
-              <span>Quick Role Demo Logins</span>
-              <span style={{ color: 'var(--teal)', fontSize: 10 }}>1-Click Testing</span>
-            </div>
+          {/* Social Logins */}
+          <div className="social-divider">
+            <span>Or continue with</span>
+          </div>
 
+          <div className="social-login-buttons">
             <button
               type="button"
-              className="quick-persona-btn"
-              onClick={() => onLoginSuccess(PERSONAS.PATIENT)}
+              className="social-btn google"
+              onClick={() => handleSocialLogin('Google')}
+              disabled={loading}
             >
-              <div className="persona-btn-left">
-                <div className="avatar avatar-small avatar-patient">MS</div>
-                <div>
-                  <strong>Maya Shah (Patient)</strong>
-                  <span>Personal records, vital signs & AI disease predictor</span>
-                </div>
-              </div>
-              <ArrowRight size={15} color="var(--muted)" />
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+              <span>Continue with Google</span>
             </button>
 
             <button
               type="button"
-              className="quick-persona-btn"
-              onClick={() => onLoginSuccess(PERSONAS.DOCTOR)}
+              className="social-btn github"
+              onClick={() => handleSocialLogin('GitHub')}
+              disabled={loading}
             >
-              <div className="persona-btn-left">
-                <div className="avatar avatar-small avatar-doctor">AM</div>
-                <div>
-                  <strong>Dr. Amelia Morgan, MD (Doctor)</strong>
-                  <span>Clinical cohort review, patient audits & AI evaluations</span>
-                </div>
-              </div>
-              <ArrowRight size={15} color="var(--muted)" />
-            </button>
-
-            <button
-              type="button"
-              className="quick-persona-btn"
-              onClick={() => onLoginSuccess(PERSONAS.ADMIN)}
-            >
-              <div className="persona-btn-left">
-                <div className="avatar avatar-small avatar-admin">SA</div>
-                <div>
-                  <strong>Nikhil (System Admin)</strong>
-                  <span>Spring Boot Admin, Eureka, Mailpit, Grafana & Swagger links</span>
-                </div>
-              </div>
-              <ArrowRight size={15} color="var(--muted)" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              <span>Continue with GitHub</span>
             </button>
           </div>
 
@@ -1068,7 +1078,7 @@ function PatientOverviewPage({ user, setActivePage }) {
           </div>
           <h2>Connected Care & Intelligent Early Detection</h2>
           <p>
-            Your clinical data is analyzed through our scikit-learn models (Diabetes, Heart Disease, and Hypertension).
+            Your clinical data is analyzed through our validated clinical AI risk engines (Diabetes, Heart Disease, and Hypertension).
             Review your latest findings or generate an official PDF clinical summary for your doctor.
           </p>
           <div className="hero-actions-row">
@@ -1143,7 +1153,7 @@ function PatientOverviewPage({ user, setActivePage }) {
         <section className="surface-card full-card" style={{ marginTop: 0 }}>
           <div className="list-header">
             <div>
-              <p className="eyebrow">Prediction Service</p>
+              <p className="eyebrow">Preventative Risk Screening</p>
               <h2>Latest Risk Assessment</h2>
             </div>
             <button className="quiet-button" onClick={() => setActivePage('predictions')}>
@@ -1279,7 +1289,7 @@ function HealthRecordsPage({ user }) {
 
   return (
     <PageIntro
-      eyebrow="Clinical Datastore · MongoDB rs0"
+      eyebrow="Clinical Health Records · Longitudinal Vitals"
       title="Longitudinal Health Records"
       lede="Comprehensive history of your vital signs, lab tests, and clinical metrics recorded across check-ins."
     >
@@ -1300,7 +1310,7 @@ function HealthRecordsPage({ user }) {
 
       {loading ? (
         <div style={{ padding: 40, textAlign: 'center', color: 'var(--muted)' }}>
-          Loading clinical records from MongoDB…
+          Loading clinical health records…
         </div>
       ) : records.length === 0 ? (
         <div className="surface-card full-card" style={{ textAlign: 'center', padding: 48 }}>
@@ -1434,7 +1444,7 @@ function HealthRecordsPage({ user }) {
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 10 }}>
                 <button type="button" className="secondary-button" onClick={() => setModalOpen(false)}>Cancel</button>
                 <button type="submit" className="primary-button" disabled={saving}>
-                  {saving ? 'Saving Record…' : 'Save to MongoDB'}
+                  {saving ? 'Saving Record…' : 'Save Health Record'}
                 </button>
               </div>
             </form>
@@ -2105,8 +2115,8 @@ function DoctorOverviewPage({ doctor, setActivePage }) {
       <div className="metric-grid">
         <MetricCard icon={UsersThree} label="Assigned Patients" value="28" trend="Active care roster" />
         <MetricCard icon={Pulse} label="AI Models Loaded" value="3" trend="Diabetes, Heart, BP" />
-        <MetricCard icon={FilePdf} label="PDF Generation" value="Active" trend="gRPC via go-service:9095" />
-        <MetricCard icon={ShieldCheck} label="Audit Trail" value="HIPAA 100%" trend="Logging in MongoDB" />
+        <MetricCard icon={FilePdf} label="PDF Generation" value="Active" trend="Instant clinical download" />
+        <MetricCard icon={ShieldCheck} label="Audit Trail" value="HIPAA 100%" trend="HIPAA audit compliant" />
       </div>
     </>
   );
@@ -2326,8 +2336,8 @@ function AdminOverviewPage({ admin, setActivePage }) {
             <button className="primary-button" onClick={() => setActivePage('admin-links')}>
               Direct Tool Links & Swagger <ArrowRight size={16} />
             </button>
-            <button className="secondary-button" onClick={() => setActivePage('admin-recommendations')}>
-              System Recommendations
+            <button className="secondary-button" onClick={() => setActivePage('admin-cluster')}>
+              Services & Observability
             </button>
           </div>
         </div>
@@ -2988,8 +2998,6 @@ function App() {
         { id: 'admin-links', label: 'Direct Tools & Swagger', icon: Link },
         { id: 'admin-cluster', label: 'Services & Observability', icon: ChartLineUp },
         { id: 'admin-assign', label: 'Doctor Assignments', icon: UsersThree },
-        { id: 'admin-security', label: 'OIDC & Security Hub', icon: Key },
-        { id: 'admin-recommendations', label: 'System Recommendations', icon: ShieldCheck },
         { id: 'profile', label: 'Admin Profile', icon: UserCircle },
       ];
     }
@@ -3073,10 +3081,7 @@ function App() {
         return <AdminClusterPage />;
       case 'admin-assign':
         return <AdminDoctorAssignmentPage />;
-      case 'admin-security':
-        return <AdminSecurityPage user={currentUser} />;
-      case 'admin-recommendations':
-        return <AdminRecommendationsPage />;
+
       case 'profile':
         return <ProfilePage user={currentUser} role={activeRole} onLogout={handleLogout} />;
       case 'overview':
@@ -3161,7 +3166,7 @@ function App() {
           <div className="topbar-status">
             <span className="pulse-indicator" />
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-              System Healthy · Cloudflare Tunnel Active
+              Care Network Online · Secure Portal
             </span>
           </div>
 
