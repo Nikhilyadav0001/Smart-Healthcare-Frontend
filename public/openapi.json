@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Smart Healthcare Platform - Unified API Specification",
+    "title": "Smart Healthcare Platform - API Specification",
     "description": "Consolidated interactive API documentation across all Smart Healthcare microservices: Auth, User Profile, Health Data, and ML Prediction.",
     "version": "1.0.0"
   },
