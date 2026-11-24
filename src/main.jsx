@@ -1919,22 +1919,34 @@ function PredictionsPage({ user, isDoctor }) {
                           />
                         </div>
 
-                        {item.top_factors && item.top_factors.length > 0 && (
-                          <div style={{ marginTop: 10 }}>
-                            <strong style={{ fontSize: 11, color: 'var(--ink)' }}>Primary Contributing Factors:</strong>
+                        {(item.top_factors || item.topFactors) && (item.top_factors || item.topFactors).length > 0 && (
+                          <div style={{ marginTop: 12 }}>
+                            <strong style={{ fontSize: 11, color: 'var(--ink)', display: 'block', marginBottom: 4 }}>
+                              🎯 Top Contributing Features & Biomarkers:
+                            </strong>
                             <ul className="factors-list">
-                              {item.top_factors.map((factor, i) => (
+                              {(item.top_factors || item.topFactors).map((factor, i) => (
                                 <li key={i}>{factor}</li>
                               ))}
                             </ul>
                           </div>
                         )}
 
-                        {item.recommendations && item.recommendations.length > 0 && (
-                          <div className="recommendations-box">
-                            <strong style={{ fontSize: 11, color: 'var(--teal-dark)' }}>Evidence-Based Recommendations:</strong>
+                        {(item.recommendations || [
+                          riskLevelStr === 'HIGH'
+                            ? `Schedule physician consultation regarding elevated ${diseaseNames[key] || key}.`
+                            : 'Maintain balanced dietary habits and routine preventative monitoring.'
+                        ]).length > 0 && (
+                          <div className="recommendations-box" style={{ marginTop: 12 }}>
+                            <strong style={{ fontSize: 11, color: 'var(--teal-dark)', display: 'block', marginBottom: 4 }}>
+                              💡 Actionable Clinical Recommendations:
+                            </strong>
                             <ul className="recommendations-list">
-                              {item.recommendations.map((rec, i) => (
+                              {(item.recommendations || [
+                                riskLevelStr === 'HIGH'
+                                  ? `Schedule physician consultation regarding elevated ${diseaseNames[key] || key}.`
+                                  : 'Maintain balanced dietary habits and routine preventative monitoring.'
+                              ]).map((rec, i) => (
                                 <li key={i}>{rec}</li>
                               ))}
                             </ul>
@@ -2015,8 +2027,13 @@ function PredictionsPage({ user, isDoctor }) {
                             </span>
                           </td>
                           <td>{probDisplay}</td>
-                          <td style={{ maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {summaryStr}
+                          <td style={{ maxWidth: 280 }}>
+                            <div style={{ fontWeight: 600, fontSize: 12 }}>{summaryStr}</div>
+                            {item.recommendations && item.recommendations.length > 0 && (
+                              <div style={{ fontSize: 11, color: 'var(--teal-dark)', marginTop: 4, lineHeight: 1.3 }}>
+                                💡 {item.recommendations[0]}
+                              </div>
+                            )}
                           </td>
                           <td>
                             <button
