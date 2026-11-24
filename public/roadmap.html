@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Healthcare System — Project Roadmap & Sprint Timeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --bg-surface: #111520;
+      --bg-card: #161b26;
+      --bg-hover: #1c2333;
+      --border-color: #242c3d;
+      --border-light: #2e384d;
+      --text-main: #e2e8f0;
+      --text-muted: #8b9bb4;
+      --text-dim: #5a6882;
+      --accent-green: #38d39f;
+      --accent-green-glow: rgba(56, 211, 159, 0.25);
+      --bar-green: #48bb78;
+      --bar-green-border: #68d391;
+      --epic-bar-bg: #2d3748;
+      
+      --color-nikhil: #38bdf8;
+      --color-kavya: #ec4899;
+      --color-manjeet: #10b981;
+      --color-gorav: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      font-size: 13px;
+    }
+
+    /* Top Navigation Bar */
+    .top-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .project-title-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .project-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #10b981 0%, #0284c7 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .project-info h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+    }
+
+    .project-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filter-group {
+      display: flex;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .filter-btn.active {
+      background: #252e42;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .action-btn {
+      background: #1e293b;
+      border: 1px solid var(--border-light);
+      color: var(--text-main);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #2d3748;
+      border-color: #4a5568;
+    }
+
+    .action-btn.primary {
+      background: #10b981;
+      border-color: #059669;
+      color: #fff;
+    }
+
+    .action-btn.primary:hover {
+      background: #059669;
+    }
+
+    /* Team Role Legend Bar */
+    .role-legend-bar {
+      background: #0d111a;
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+    }
+
+    .legend-title {
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.8px;
+    }
+
+    .team-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .team-badge:hover, .team-badge.active-filter {
+      background: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .avatar-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .avatar-nikhil { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+    .avatar-kavya { background: linear-gradient(135deg, #db2777, #ec4899); }
+    .avatar-manjeet { background: linear-gradient(135deg, #059669, #10b981); }
+    .avatar-gorav { background: linear-gradient(135deg, #d97706, #f59e0b); }
+    .avatar-unassigned { background: #475569; }
+
+    /* Main Roadmap Layout Container */
+    .roadmap-wrapper {
+      display: grid;
+      grid-template-columns: 520px 1fr;
+      min-height: calc(100vh - 105px);
+      position: relative;
+    }
+
+    /* Left Table Pane */
+    .table-pane {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-color);
+      position: relative;
+      z-index: 10;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 310px 95px 115px;
+      height: 52px;
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      padding: 0 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-surface);
+      position: sticky;
+      top: 59px;
+      z-index: 20;
+    }
+
+    .th-work { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+    /* Right Timeline / Gantt Pane */
+    .timeline-pane {
+      background: var(--bg-dark);
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .timeline-header-container {
+      position: sticky;
+      top: 59px;
+      z-index: 20;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-color);
+      height: 52px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .months-row {
+      display: flex;
+      height: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .month-col {
+      text-align: center;
+      padding-top: 3px;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .sprints-row {
+      display: flex;
+      height: 28px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+
+    .sprint-col-hdr {
+      flex: 1;
+      min-width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    /* Rows Rendering */
+    .row-item {
+      display: grid;
+      grid-template-columns: 310px 95px 115px;
+      height: 38px;
+      border-bottom: 1px solid #1a2233;
+      align-items: center;
+      padding: 0 16px;
+      transition: background 0.1s ease;
+    }
+
+    .row-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .row-item.epic-row {
+      background: #131926;
+      border-bottom: 1px solid var(--border-light);
+      font-weight: 600;
+    }
+
+    .row-item.epic-row:hover {
+      background: #192133;
+    }
+
+    .task-title-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 8px;
+    }
+
+    .chevron-icon {
+      font-size: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 14px;
+      transition: transform 0.2s;
+    }
+
+    .chevron-icon.collapsed {
+      transform: rotate(-90deg);
+    }
+
+    .issue-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 1px 5px;
+      border-radius: 4px;
+      text-decoration: none;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .epic-key {
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.12);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .task-checkbox {
+      width: 13px;
+      height: 13px;
+      accent-color: var(--bar-green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .task-name-text {
+      color: var(--text-main);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-cell {
+      display: flex;
+      align-items: center;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .status-done {
+      background: rgba(56, 211, 159, 0.14);
+      color: #34d399;
+      border: 1px solid rgba(56, 211, 159, 0.3);
+    }
+
+    .status-in-progress {
+      background: rgba(56, 189, 248, 0.14);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .status-planned {
+      background: rgba(148, 163, 184, 0.14);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .assignee-cell {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11.5px;
+      color: var(--text-main);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* Timeline Grid and Gantt Bars */
+    .timeline-body {
+      position: relative;
+      min-width: 900px;
+    }
+
+    .grid-lines-overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .grid-col {
+      flex: 1;
+      min-width: 150px;
+      border-right: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+
+    .gantt-row {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gantt-row:hover {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .gantt-bar-container {
+      position: absolute;
+      height: 18px;
+      display: flex;
+      align-items: center;
+    }
+
+    .gantt-bar {
+      height: 16px;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #38d39f 0%, #22c55e 100%);
+      box-shadow: 0 0 8px rgba(56, 211, 159, 0.25);
+      border: 1px solid #4ade80;
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.15s, filter 0.15s;
+    }
+
+    .gantt-bar:hover {
+      filter: brightness(1.15);
+      transform: scaleY(1.15);
+      z-index: 15;
+    }
+
+    .gantt-bar.epic-bar {
+      height: 12px;
+      border-radius: 6px;
+      background: #334155;
+      border: 1px solid #475569;
+      box-shadow: none;
+    }
+
+    .gantt-bar-link-icon {
+      position: absolute;
+      right: 4px;
+      width: 10px;
+      height: 10px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* SVG Dependencies Overlay */
+    .dependency-svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .dependency-path {
+      fill: none;
+      stroke: #64748b;
+      stroke-width: 1.5;
+      stroke-dasharray: 3 3;
+      opacity: 0.7;
+    }
+
+    .dependency-path.highlight {
+      stroke: #38bdf8;
+      stroke-width: 2;
+      stroke-dasharray: none;
+      opacity: 1;
+    }
+
+    /* Tooltip */
+    .custom-tooltip {
+      position: fixed;
+      display: none;
+      background: #1e293b;
+      border: 1px solid #334155;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: var(--text-main);
+      z-index: 1000;
+      max-width: 280px;
+      pointer-events: none;
+    }
+
+    .custom-tooltip strong {
+      display: block;
+      color: #fff;
+      font-size: 12.5px;
+      margin-bottom: 4px;
+    }
+
+    .custom-tooltip .tt-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #334155;
+      font-size: 10.5px;
+    }
+
+    /* Print / Presentation optimizations */
+    @media print {
+      .top-header, .role-legend-bar {
+        position: static;
+      }
+      .toolbar-actions {
+        display: none;
+      }
+      body {
+        background: #0a0d14 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Application Header -->
+  <header class="top-header">
+    <div class="project-title-area">
+      <div class="project-icon">🩺</div>
+      <div class="project-info">
+        <h1>Smart Healthcare Disease Risk Prediction <span class="badge-tag">SPRINT ROADMAP 2026</span></h1>
+        <p>Monorepo Platform: Java 25 &bull; Spring Boot 4 &bull; ONNX ML &bull; Go Service &bull; React &bull; Cloudflare Tunnel</p>
+      </div>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="filter-group" id="assigneeFilters">
+        <button class="filter-btn active" data-assignee="ALL">All Roles</button>
+        <button class="filter-btn" data-assignee="Nikhil">Nikhil (DevOps)</button>
+        <button class="filter-btn" data-assignee="Kavya">Kavya (ML)</button>
+        <button class="filter-btn" data-assignee="Manjeet">Manjeet (App Dev)</button>
+        <button class="filter-btn" data-assignee="Gorav">Gorav (Security)</button>
+      </div>
+
+      <button class="action-btn" id="toggleDepsBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        Dependencies
+      </button>
+
+      <button class="action-btn primary" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Export / Print
+      </button>
+    </div>
+  </header>
+
+  <!-- Team Member & Roles Legend Bar -->
+  <div class="role-legend-bar">
+    <span class="legend-title">Team Allocation & Scope:</span>
+
+    <div class="team-badge" data-assignee="Nikhil">
+      <div class="avatar-circle avatar-nikhil">N</div>
+      <span><strong>Nikhil:</strong> DevOps & Overall Visibility (Platform, Observability, Ingress)</span>
+    </div>
+
+    <div class="team-badge" data-assignee="Kavya">
+      <div class="avatar-circle avatar-kavya">K</div>
+      <span><strong>Kavya:</strong> ML Part (Datasets, Models, ONNX, Inference Engine)</span>
+    </div>
+
+    <div class="team-badge" data-assignee="Manjeet">
+      <div class="avatar-circle avatar-manjeet">M</div>
+      <span><strong>Manjeet:</strong> Application Development (React Frontend, Microservices, Go PDF)</span>
+    </div>
+
+    <div class="team-badge" data-assignee="Gorav">
+      <div class="avatar-circle avatar-gorav">G</div>
+      <span><strong>Gorav:</strong> Security (Auth Service, JWT RS256, OAuth2, RBAC, Gateway)</span>
+    </div>
+  </div>
+
+  <!-- Main Roadmap Grid Layout -->
+  <div class="roadmap-wrapper">
+    
+    <!-- Left Table Pane: Work, Status, Assignee -->
+    <div class="table-pane">
+      <div class="table-header">
+        <div class="th-work">
+          <span class="chevron-icon">▼</span>
+          <span>Work Item</span>
+        </div>
+        <div>Status</div>
+        <div>Assignee</div>
+      </div>
+
+      <div id="tableBody">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Right Timeline / Gantt Chart Pane -->
+    <div class="timeline-pane">
+      <div class="timeline-header-container">
+        <!-- Months Header -->
+        <div class="months-row">
+          <div class="month-col" style="flex: 1;">August</div>
+          <div class="month-col" style="flex: 2;">September</div>
+          <div class="month-col" style="flex: 2;">October</div>
+          <div class="month-col" style="flex: 1;">November</div>
+        </div>
+
+        <!-- Sprints Header -->
+        <div class="sprints-row">
+          <div class="sprint-col-hdr">Sprint 1</div>
+          <div class="sprint-col-hdr">Sprint 2</div>
+          <div class="sprint-col-hdr">Sprint 3</div>
+          <div class="sprint-col-hdr">Sprint 4</div>
+          <div class="sprint-col-hdr">Sprint 5</div>
+          <div class="sprint-col-hdr">Sprint 6</div>
+        </div>
+      </div>
+
+      <!-- Timeline Body with Grid and Bars -->
+      <div class="timeline-body" id="timelineBody">
+        <!-- Background Sprint Grid Lines -->
+        <div class="grid-lines-overlay">
+          <div class="grid-col"></div>
+          <div class="grid-col"></div>
+          <div class="grid-col"></div>
+          <div class="grid-col"></div>
+          <div class="grid-col"></div>
+          <div class="grid-col"></div>
+        </div>
+
+        <!-- SVG Dependencies Curved Lines -->
+        <svg class="dependency-svg-layer" id="dependencySvg">
+          <!-- Rendered dynamically by JavaScript -->
+        </svg>
+
+        <!-- Gantt Bars Container -->
+        <div id="barsContainer">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating Details Tooltip -->
+  <div class="custom-tooltip" id="tooltip"></div>
+
+  <script>
+    // Project Roadmap Dataset tailored specifically to Smart Healthcare Architecture
+    const roadmapData = [
+      // EPIC 1: SPRINT 1 (August)
+      {
+        id: "SHP-1",
+        key: "SHP-1",
+        title: "Platform Foundations, DevOps & UI Architecture",
+        isEpic: true,
+        assignee: "Unassigned",
+        status: "Done",
+        startSprint: 1,
+        endSprint: 1.95,
+        collapsed: false,
+        tasks: [
+          { key: "SHP-2", title: "Research healthcare domain & clinical risk factors", status: "Done", assignee: "Kavya", sprint: 1, offset: 0.05, duration: 0.35, tech: "Medical literature, WHO & AHA guidelines" },
+          { key: "SHP-3", title: "Monorepo architecture & shared POM setup", status: "Done", assignee: "Nikhil", sprint: 1, offset: 0.1, duration: 0.4, tech: "Java 25, Maven reactor, Spring Boot 4" },
+          { key: "SHP-4", title: "Docker compose data stack (Postgres, MariaDB, Mongo, Kafka)", status: "Done", assignee: "Nikhil", sprint: 1, offset: 0.15, duration: 0.45, tech: "Docker Desktop, Compose v2, Healthchecks" },
+          { key: "SHP-5", title: "Config Server & Eureka Discovery platform", status: "Done", assignee: "Nikhil", sprint: 1, offset: 0.2, duration: 0.5, tech: "Spring Cloud Config (Private Git), Eureka" },
+          { key: "SHP-6", title: "Security threat model & HIPAA/GDPR baseline", status: "Done", assignee: "Gorav", sprint: 1, offset: 0.25, duration: 0.4, tech: "OAuth2, OWASP Top 10, Data Encryption" },
+          { key: "SHP-7", title: "Frontend UI/UX design (Dashboard & Vitals)", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.3, duration: 0.5, tech: "Figma, Tailwind CSS, Responsive Design" },
+          { key: "SHP-8", title: "Frontend project setup (React 18 + Vite)", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.4, duration: 0.45, tech: "Vite, React Router v6, Axios" },
+          { key: "SHP-9", title: "Install dependencies & folder structure", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.45, duration: 0.35, tech: "Lucide Icons, Recharts, Tailwind" },
+          { key: "SHP-10", title: "Create basic UI pages (Home, Risk Input, Vitals)", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.5, duration: 0.45, tech: "React Components, Formik/Zod" },
+          { key: "SHP-11", title: "Create responsive Navbar + Footer + Patient Header", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.55, duration: 0.35, tech: "Tailwind UI, Dark Mode Theme" },
+          { key: "SHP-12", title: "Basic UI unit testing & routing guards", status: "Done", assignee: "Manjeet", sprint: 1, offset: 0.6, duration: 0.35, tech: "Vitest, React Testing Library" },
+          { key: "SHP-13", title: "Spring Boot service-template & observability-starter", status: "Done", assignee: "Nikhil", sprint: 1, offset: 0.65, duration: 0.3, tech: "OpenTelemetry 1.62, Logback OTLP" },
+          { key: "SHP-14", title: "Prepare presentation for MID Sem Evaluation", status: "Done", assignee: "Nikhil", sprint: 1, offset: 0.7, duration: 0.28, tech: "Architecture slides, Live Gateway demo" }
+        ]
+      },
+
+      // EPIC 2: SPRINT 2 & 3 (September)
+      {
+        id: "SHP-15",
+        key: "SHP-15",
+        title: "Machine Learning Disease Risk Prediction Engine",
+        isEpic: true,
+        assignee: "Unassigned",
+        status: "Done",
+        startSprint: 2,
+        endSprint: 3.95,
+        collapsed: false,
+        tasks: [
+          { key: "SHP-16", title: "Dataset collection (Pima Diabetes, UCI Heart, Stroke)", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.05, duration: 0.45, tech: "Kaggle, UCI ML Repository, Pandas" },
+          { key: "SHP-17", title: "Dataset cleaning & missing value imputation", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.15, duration: 0.45, tech: "IterativeImputer, Median KNN, Seaborn" },
+          { key: "SHP-18", title: "Research Random Forest vs XGBoost for clinical data", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.25, duration: 0.4, tech: "Scikit-Learn, XGBoost, Model benchmarking" },
+          { key: "SHP-19", title: "Medical feature selection & correlation analysis", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.4, duration: 0.45, tech: "Correlation Matrix, Mutual Info, SHAP values" },
+          { key: "SHP-20", title: "Data preprocessing & standard scaler pipelines", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.55, duration: 0.4, tech: "StandardScaler, OneHotEncoder, ColumnTransformer" },
+          { key: "SHP-21", title: "Random Forest model training for Diabetes & Heart Risk", status: "Done", assignee: "Kavya", sprint: 2, offset: 0.7, duration: 0.45, tech: "RandomForestClassifier, Class Weight Balancing" },
+          { key: "SHP-22", title: "Feature engineering (BMI classification, Arterial Pressure)", status: "Done", assignee: "Kavya", sprint: 3, offset: 0.05, duration: 0.4, tech: "Clinical ratio formulas, Feature cross" },
+          { key: "SHP-23", title: "Model evaluation (ROC-AUC, Precision, Recall, F1)", status: "Done", assignee: "Kavya", sprint: 3, offset: 0.2, duration: 0.45, tech: "Stratified K-Fold CV, Confusion Matrix" },
+          { key: "SHP-24", title: "Export trained models to ONNX format (.onnx / skl2onnx)", status: "Done", assignee: "Kavya", sprint: 3, offset: 0.4, duration: 0.4, tech: "skl2onnx, ONNX Runtime, FP32 serialization" },
+          { key: "SHP-25", title: "Create prediction-service ONNX Risk Engine", status: "Done", assignee: "Kavya", sprint: 3, offset: 0.55, duration: 0.4, tech: "Java ONNX Runtime, Rule-based clinical fallback" },
+          { key: "SHP-26", title: "ML inference pipeline & risk factor weighting integration", status: "Done", assignee: "Kavya", sprint: 3, offset: 0.7, duration: 0.28, tech: "Postgres prediction_db, Outbox event publisher" }
+        ]
+      },
+
+      // EPIC 3: SPRINT 4 (October)
+      {
+        id: "SHP-27",
+        key: "SHP-27",
+        title: "Backend Microservices & Distributed Application Development",
+        isEpic: true,
+        assignee: "Unassigned",
+        status: "Done",
+        startSprint: 4,
+        endSprint: 4.95,
+        collapsed: false,
+        tasks: [
+          { key: "SHP-28", title: "Spring Cloud API Gateway (WebFlux + CorrelationId)", status: "Done", assignee: "Nikhil", sprint: 4, offset: 0.05, duration: 0.4, tech: "Spring Cloud Gateway, Reactor, CORS" },
+          { key: "SHP-29", title: "Setup user-profile-service (MariaDB 11.4 + Redis cache)", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.12, duration: 0.45, tech: "Spring Data JPA, Flyway V1, MariaDB :3308" },
+          { key: "SHP-30", title: "Setup health-data-service (MongoDB single-node rs0)", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.22, duration: 0.45, tech: "Spring Data Mongo, Multi-doc Transactions" },
+          { key: "SHP-31", title: "Database schemas, models & outbox pattern entities", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.32, duration: 0.4, tech: "Transactional Outbox, ProcessedEvents table" },
+          { key: "SHP-32", title: "Create REST & gRPC APIs for patient records & profiles", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.42, duration: 0.45, tech: "Spring gRPC, Buf Protobuf schemas" },
+          { key: "SHP-33", title: "Connect prediction-service with health-data via gRPC", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.52, duration: 0.4, tech: "gRPC Channel, Deadline propagation" },
+          { key: "SHP-34", title: "Build Go service for PDF health report generation & email", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.62, duration: 0.45, tech: "Go 1.22, Maroto PDF, Mailpit SMTP, Kafka" },
+          { key: "SHP-35", title: "Kafka 14 topics setup, event consumers & DLQ handling", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.72, duration: 0.35, tech: "Apache Kafka 3.9, Idempotent Consumers" },
+          { key: "SHP-36", title: "Frontend integration with API Gateway (/api endpoints)", status: "Done", assignee: "Manjeet", sprint: 4, offset: 0.8, duration: 0.3, tech: "Axios Interceptors, JWT Token Refresh Flow" }
+        ]
+      },
+
+      // EPIC 4: SPRINT 5 (October)
+      {
+        id: "SHP-37",
+        key: "SHP-37",
+        title: "Security Hardening, Observability & Cloudflare Ingress",
+        isEpic: true,
+        assignee: "Unassigned",
+        status: "Done",
+        startSprint: 5,
+        endSprint: 5.95,
+        collapsed: false,
+        tasks: [
+          { key: "SHP-38", title: "Setup auth-service (PostgreSQL auth_db + BCrypt)", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.05, duration: 0.4, tech: "Spring Security 6, PostgreSQL :5432" },
+          { key: "SHP-39", title: "RS256 JWT access tokens & JWKS public endpoint", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.15, duration: 0.42, tech: "RSA 2048-bit KeyPair, /.well-known/jwks.json" },
+          { key: "SHP-40", title: "Refresh token family rotation & reuse detection", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.25, duration: 0.42, tech: "HttpOnly Cookies, SHA-256 Hashing, Revocation" },
+          { key: "SHP-41", title: "GitHub OAuth2 authorization-code flow integration", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.35, duration: 0.45, tech: "Spring Security OAuth2 Client, Account Linking" },
+          { key: "SHP-42", title: "Role-Based Access Control (PATIENT, DOCTOR, ADMIN)", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.45, duration: 0.4, tech: "Method Security @PreAuthorize, Token Claims" },
+          { key: "SHP-43", title: "API Gateway JWT resource server validation & rate limiting", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.55, duration: 0.4, tech: "Redis Token Bucket Filter, Route Authorization" },
+          { key: "SHP-44", title: "Observability stack (Loki OTLP, Tempo Tracing, Prometheus)", status: "Done", assignee: "Nikhil", sprint: 5, offset: 0.45, duration: 0.45, tech: "Grafana 11.4, Loki 3.3.2, Alloy OTLP" },
+          { key: "SHP-45", title: "Grafana 'Services Overview' dashboard & down alerts", status: "Done", assignee: "Nikhil", sprint: 5, offset: 0.6, duration: 0.38, tech: "Micrometer, Prometheus Scrapes :9091" },
+          { key: "SHP-46", title: "Cloudflare Tunnel (smarthealthcare.dpdns.org + SSL)", status: "Done", assignee: "Nikhil", sprint: 5, offset: 0.7, duration: 0.35, tech: "cloudflared Windows Service, QUIC tunnel" },
+          { key: "SHP-47", title: "Security audit, OWASP scan & penetration check", status: "Done", assignee: "Gorav", sprint: 5, offset: 0.78, duration: 0.28, tech: "Header checks, CORS lockdown, SQLi/XSS" }
+        ]
+      },
+
+      // EPIC 5: SPRINT 6 (November)
+      {
+        id: "SHP-48",
+        key: "SHP-48",
+        title: "Testing, Documentation & Final Production Deployment",
+        isEpic: true,
+        assignee: "Unassigned",
+        status: "Done",
+        startSprint: 6,
+        endSprint: 6.95,
+        collapsed: false,
+        tasks: [
+          { key: "SHP-49", title: "Distributed registration saga end-to-end verification", status: "Done", assignee: "Nikhil", sprint: 6, offset: 0.05, duration: 0.4, tech: "Kafka sagas, Outbox compensation, Tempo spans" },
+          { key: "SHP-50", title: "Frontend + Backend + ML API integration testing", status: "Done", assignee: "Manjeet", sprint: 6, offset: 0.12, duration: 0.42, tech: "End-to-End browser walkthrough, Axios" },
+          { key: "SHP-51", title: "UI polish, responsive fixes & medical disclaimers", status: "Done", assignee: "Manjeet", sprint: 6, offset: 0.22, duration: 0.4, tech: "Tailwind CSS, Gauge animations, Error states" },
+          { key: "SHP-52", title: "Final ML model accuracy & clinical threshold verification", status: "Done", assignee: "Kavya", sprint: 6, offset: 0.32, duration: 0.42, tech: "Inference latency (<15ms), Confusion matrix" },
+          { key: "SHP-53", title: "Load testing & stress benchmarking with k6", status: "Done", assignee: "Nikhil", sprint: 6, offset: 0.42, duration: 0.4, tech: "k6 scenarios, Gateway throughput & latency" },
+          { key: "SHP-54", title: "Security token revocation & family replay test", status: "Done", assignee: "Gorav", sprint: 6, offset: 0.52, duration: 0.38, tech: "Automated test script, Redis blacklist" },
+          { key: "SHP-55", title: "Prepare final project documentation & architecture report", status: "Done", assignee: "Nikhil", sprint: 6, offset: 0.62, duration: 0.4, tech: "Markdown handoff, C4 Architecture diagrams" },
+          { key: "SHP-56", title: "Prepare final project presentation PPT & slide deck", status: "Done", assignee: "Manjeet", sprint: 6, offset: 0.72, duration: 0.35, tech: "Keynote/PowerPoint, Demo screencast" },
+          { key: "SHP-57", title: "Final production deployment & live domain verification", status: "Done", assignee: "Nikhil", sprint: 6, offset: 0.8, duration: 0.3, tech: "Nginx reverse proxy, Cloudflare tunnel live" },
+          { key: "SHP-58", title: "Project code backup & final GitHub release tagging", status: "Done", assignee: "Nikhil", sprint: 6, offset: 0.88, duration: 0.22, tech: "Git tags v1.0, Release notes, Asset archive" }
+        ]
+      }
+    ];
+
+    let currentAssigneeFilter = "ALL";
+    let showDependencies = true;
+
+    // Helper: get avatar color class
+    function getAvatarClass(name) {
+      if (name.includes("Nikhil")) return "avatar-nikhil";
+      if (name.includes("Kavya")) return "avatar-kavya";
+      if (name.includes("Manjeet")) return "avatar-manjeet";
+      if (name.includes("Gorav")) return "avatar-gorav";
+      return "avatar-unassigned";
+    }
+
+    function getInitials(name) {
+      if (name === "Unassigned") return "👤";
+      return name.charAt(0).toUpperCase();
+    }
+
+    // Render Table and Gantt Rows
+    function renderRoadmap() {
+      const tableBody = document.getElementById("tableBody");
+      const barsContainer = document.getElementById("barsContainer");
+      tableBody.innerHTML = "";
+      barsContainer.innerHTML = "";
+
+      let visibleRowIndex = 0;
+      const barPositions = {}; // Store { key: { x, y, width } } for drawing SVG lines
+
+      roadmapData.forEach(epic => {
+        // Filter logic for epic: show if epic matches or any child task matches
+        const filteredTasks = epic.tasks.filter(t => {
+          if (currentAssigneeFilter === "ALL") return true;
+          return t.assignee.toLowerCase().includes(currentAssigneeFilter.toLowerCase());
+        });
+
+        const showEpic = (currentAssigneeFilter === "ALL") || (filteredTasks.length > 0);
+        if (!showEpic) return;
+
+        // Render Epic Row
+        const epicTableRow = document.createElement("div");
+        epicTableRow.className = "row-item epic-row";
+        epicTableRow.innerHTML = `
+          <div class="task-title-cell">
+            <span class="chevron-icon ${epic.collapsed ? 'collapsed' : ''}" onclick="toggleEpic('${epic.id}')">▼</span>
+            <span class="issue-key epic-key">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+              ${epic.key}
+            </span>
+            <span class="task-name-text" title="${epic.title}">${epic.title}</span>
+          </div>
+          <div class="status-cell">
+            <span class="status-badge status-done">Done ▾</span>
+          </div>
+          <div class="assignee-cell">
+            <div class="avatar-circle avatar-unassigned">👤</div>
+            <span>${epic.assignee}</span>
+          </div>
+        `;
+        tableBody.appendChild(epicTableRow);
+
+        // Render Epic Gantt Bar
+        const epicGanttRow = document.createElement("div");
+        epicGanttRow.className = "gantt-row";
+        
+        const sprintWidth = 150; // Each sprint column width in pixels
+        const epicStartX = (epic.startSprint - 1) * sprintWidth;
+        const epicEndX = (epic.endSprint - 1) * sprintWidth;
+        const epicWidth = Math.max(epicEndX - epicStartX, 40);
+
+        epicGanttRow.innerHTML = `
+          <div class="gantt-bar-container" style="left: ${epicStartX}px; width: ${epicWidth}px;">
+            <div class="gantt-bar epic-bar" style="width: 100%;" title="${epic.title} (${epic.startSprint} - ${Math.round(epic.endSprint)})"></div>
+          </div>
+        `;
+        barsContainer.appendChild(epicGanttRow);
+
+        barPositions[epic.key] = {
+          x: epicStartX,
+          y: visibleRowIndex * 38 + 19,
+          width: epicWidth,
+          isEpic: true
+        };
+        visibleRowIndex++;
+
+        // Render Child Tasks if not collapsed
+        if (!epic.collapsed) {
+          filteredTasks.forEach(task => {
+            const taskTableRow = document.createElement("div");
+            taskTableRow.className = "row-item";
+            taskTableRow.innerHTML = `
+              <div class="task-title-cell" style="padding-left: 20px;">
+                <input type="checkbox" checked class="task-checkbox">
+                <span class="issue-key">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  ${task.key}
+                </span>
+                <span class="task-name-text" title="${task.title}">${task.title}</span>
+              </div>
+              <div class="status-cell">
+                <span class="status-badge status-done">Done ▾</span>
+              </div>
+              <div class="assignee-cell">
+                <div class="avatar-circle ${getAvatarClass(task.assignee)}">${getInitials(task.assignee)}</div>
+                <span>${task.assignee}</span>
+              </div>
+            `;
+            tableBody.appendChild(taskTableRow);
+
+            // Calculate Task Gantt Bar placement
+            const taskGanttRow = document.createElement("div");
+            taskGanttRow.className = "gantt-row";
+
+            const taskStartX = (task.sprint - 1 + task.offset) * sprintWidth;
+            const taskWidth = task.duration * sprintWidth;
+
+            taskGanttRow.innerHTML = `
+              <div class="gantt-bar-container" style="left: ${taskStartX}px; width: ${taskWidth}px;">
+                <div class="gantt-bar" 
+                     style="width: 100%;" 
+                     data-key="${task.key}"
+                     data-title="${task.title}"
+                     data-assignee="${task.assignee}"
+                     data-sprint="Sprint ${task.sprint}"
+                     data-tech="${task.tech}">
+                  <span class="gantt-bar-link-icon">🔗</span>
+                </div>
+              </div>
+            `;
+            barsContainer.appendChild(taskGanttRow);
+
+            barPositions[task.key] = {
+              x: taskStartX,
+              y: visibleRowIndex * 38 + 19,
+              width: taskWidth,
+              isEpic: false
+            };
+            visibleRowIndex++;
+          });
+        }
+      });
+
+      // Update total height for SVG and timeline body
+      const totalHeight = visibleRowIndex * 38;
+      document.getElementById("dependencySvg").style.height = totalHeight + "px";
+      document.getElementById("timelineBody").style.height = totalHeight + "px";
+
+      if (showDependencies) {
+        drawDependencyLines(barPositions);
+      } else {
+        document.getElementById("dependencySvg").innerHTML = "";
+      }
+
+      attachTooltips();
+    }
+
+    // Draw Elegant SVG Bezier Connectors between Milestones and Epics
+    function drawDependencyLines(pos) {
+      const svg = document.getElementById("dependencySvg");
+      svg.innerHTML = "";
+
+      // List of key project milestone dependencies to connect smoothly across Sprints
+      const links = [
+        // Sprint 1 Platform -> Sprint 1 Presentation
+        { from: "SHP-3", to: "SHP-5" },
+        { from: "SHP-5", to: "SHP-13" },
+        { from: "SHP-10", to: "SHP-14" },
+
+        // Sprint 1 Mid-Sem -> Sprint 2 ML Collection & Prep
+        { from: "SHP-14", to: "SHP-16" },
+
+        // Sprint 2 ML Dataset -> Training -> Evaluation -> ONNX Export
+        { from: "SHP-16", to: "SHP-19" },
+        { from: "SHP-19", to: "SHP-21" },
+        { from: "SHP-21", to: "SHP-23" },
+        { from: "SHP-23", to: "SHP-24" },
+        { from: "SHP-24", to: "SHP-25" },
+
+        // Sprint 3 ML ONNX -> Sprint 4 Backend & Go Microservice
+        { from: "SHP-25", to: "SHP-28" },
+        { from: "SHP-28", to: "SHP-30" },
+        { from: "SHP-30", to: "SHP-32" },
+        { from: "SHP-32", to: "SHP-34" },
+        { from: "SHP-34", to: "SHP-36" },
+
+        // Sprint 4 Microservices -> Sprint 5 Security & Observability & Cloudflare
+        { from: "SHP-36", to: "SHP-38" },
+        { from: "SHP-38", to: "SHP-39" },
+        { from: "SHP-39", to: "SHP-43" },
+        { from: "SHP-43", to: "SHP-44" },
+        { from: "SHP-44", to: "SHP-46" },
+
+        // Sprint 5 Observability & Cloudflare -> Sprint 6 Final Integration, k6 & Release
+        { from: "SHP-46", to: "SHP-49" },
+        { from: "SHP-49", to: "SHP-50" },
+        { from: "SHP-50", to: "SHP-52" },
+        { from: "SHP-52", to: "SHP-53" },
+        { from: "SHP-53", to: "SHP-57" },
+        { from: "SHP-57", to: "SHP-58" }
+      ];
+
+      links.forEach(link => {
+        const p1 = pos[link.from];
+        const p2 = pos[link.to];
+
+        if (!p1 || !p2) return;
+
+        const startX = p1.x + p1.width;
+        const startY = p1.y;
+        const endX = p2.x;
+        const endY = p2.y;
+
+        // Cubic Bezier curve control points
+        const dx = Math.abs(endX - startX) * 0.5 + 20;
+        const pathData = `M ${startX} ${startY} C ${startX + dx} ${startY}, ${endX - dx} ${endY}, ${endX} ${endY}`;
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathData);
+        path.setAttribute("class", "dependency-path");
+
+        // Small circle at start and arrow at target
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", startX);
+        circle.setAttribute("cy", startY);
+        circle.setAttribute("r", 2.5);
+        circle.setAttribute("fill", "#64748b");
+
+        svg.appendChild(path);
+        svg.appendChild(circle);
+      });
+    }
+
+    // Toggle Epic Collapse
+    function toggleEpic(epicId) {
+      const epic = roadmapData.find(e => e.id === epicId);
+      if (epic) {
+        epic.collapsed = !epic.collapsed;
+        renderRoadmap();
+      }
+    }
+
+    // Attach Hover Tooltip logic
+    function attachTooltips() {
+      const tooltip = document.getElementById("tooltip");
+      const bars = document.querySelectorAll(".gantt-bar:not(.epic-bar)");
+
+      bars.forEach(bar => {
+        bar.addEventListener("mouseenter", (e) => {
+          const key = bar.getAttribute("data-key");
+          const title = bar.getAttribute("data-title");
+          const assignee = bar.getAttribute("data-assignee");
+          const sprint = bar.getAttribute("data-sprint");
+          const tech = bar.getAttribute("data-tech");
+
+          tooltip.innerHTML = `
+            <strong>${key}: ${title}</strong>
+            <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">Tech: ${tech}</div>
+            <div class="tt-meta">
+              <span>👤 ${assignee}</span>
+              <span style="color: #34d399; font-weight: 600;">${sprint}</span>
+            </div>
+          `;
+          tooltip.style.display = "block";
+          positionTooltip(e);
+        });
+
+        bar.addEventListener("mousemove", (e) => {
+          positionTooltip(e);
+        });
+
+        bar.addEventListener("mouseleave", () => {
+          tooltip.style.display = "none";
+        });
+      });
+    }
+
+    function positionTooltip(e) {
+      const tooltip = document.getElementById("tooltip");
+      const x = e.clientX + 15;
+      const y = e.clientY + 15;
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    }
+
+    // Assignee Filter Buttons
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentAssigneeFilter = btn.getAttribute("data-assignee");
+        renderRoadmap();
+      });
+    });
+
+    // Legend Click Filter
+    document.querySelectorAll(".team-badge").forEach(badge => {
+      badge.addEventListener("click", () => {
+        const assignee = badge.getAttribute("data-assignee");
+        const matchingBtn = document.querySelector(`.filter-btn[data-assignee="${assignee}"]`);
+        if (matchingBtn) {
+          matchingBtn.click();
+        }
+      });
+    });
+
+    // Toggle Dependencies
+    document.getElementById("toggleDepsBtn").addEventListener("click", function() {
+      showDependencies = !showDependencies;
+      this.classList.toggle("active", showDependencies);
+      renderRoadmap();
+    });
+
+    // Initial Render
+    renderRoadmap();
+  </script>
+</body>
+</html>

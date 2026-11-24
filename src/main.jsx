@@ -2355,8 +2355,11 @@ function AdminOverviewPage({ admin, setActivePage }) {
             Access Spring Boot Admin, Grafana dashboards, Eureka service registry, and individual Swagger OpenAPI documents.
           </p>
           <div className="hero-actions-row">
-            <button className="primary-button" onClick={() => setActivePage('admin-links')}>
-              Direct Tool Links & Swagger <ArrowRight size={16} />
+            <button className="primary-button" onClick={() => setActivePage('admin-roles')}>
+              Manage User Roles & Access <ArrowRight size={16} />
+            </button>
+            <button className="secondary-button" onClick={() => setActivePage('admin-links')}>
+              Direct Tool Links & Swagger
             </button>
             <button className="secondary-button" onClick={() => setActivePage('admin-cluster')}>
               Services & Observability
@@ -2681,6 +2684,257 @@ function AdminClusterPage() {
 }
 
 // ============================================================================
+// ============================================================================
+// ADMIN USER ROLES & ACCESS MANAGEMENT PAGE
+// ============================================================================
+function AdminUserRolesPage() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [savingId, setSavingId] = useState(null);
+  const [notice, setNotice] = useState(null);
+  const [filter, setFilter] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState({});
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        headers: {
+          'X-API-KEY': 'smarthealth-admin-secret-key-2026'
+        }
+      });
+      if (!res.ok) {
+        throw new Error('Failed to load users: HTTP ' + res.status);
+      }
+      const data = await res.json();
+      const list = Array.isArray(data) ? data : (data.value || []);
+      setUsers(list);
+      const roleMap = {};
+      list.forEach(u => {
+        const primary = u.roles && u.roles.includes('ADMIN') ? 'ADMIN'
+          : u.roles && u.roles.includes('DOCTOR') ? 'DOCTOR'
+          : 'PATIENT';
+        roleMap[u.id] = primary;
+      });
+      setSelectedRoles(roleMap);
+    } catch (err) {
+      setError(err.message || 'Error loading users');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleRoleChange = (userId, newRole) => {
+    setSelectedRoles(prev => ({ ...prev, [userId]: newRole }));
+  };
+
+  const handleSaveRole = async (user) => {
+    const newRole = selectedRoles[user.id] || 'PATIENT';
+    setSavingId(user.id);
+    setNotice(null);
+    try {
+      const res = await fetch('/api/auth/admin/users/' + user.id + '/roles', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': 'smarthealth-admin-secret-key-2026'
+        },
+        body: JSON.stringify({ roles: [newRole] })
+      });
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(txt || ('HTTP ' + res.status));
+      }
+      setNotice({
+        type: 'success',
+        message: 'Successfully updated role for ' + user.email + ' to ' + newRole + '.'
+      });
+      await fetchUsers();
+    } catch (err) {
+      setNotice({
+        type: 'error',
+        message: 'Failed to update role for ' + user.email + ': ' + err.message
+      });
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const filteredUsers = users.filter(u => {
+    if (!filter) return true;
+    const term = filter.toLowerCase();
+    return (u.email && u.email.toLowerCase().includes(term)) ||
+           (u.id && u.id.toLowerCase().includes(term)) ||
+           (u.roles && u.roles.some(r => r.toLowerCase().includes(term)));
+  });
+
+  return (
+    <PageIntro
+      eyebrow="Identity Governance & Access Control"
+      title="User Roles & Access Management"
+      lede="Inspect registered user accounts, verify credentials, and immediately modify or assign security roles (PATIENT, DOCTOR, ADMIN)."
+    >
+      {notice && (
+        <div style={{
+          padding: '12px 16px',
+          borderRadius: 8,
+          marginBottom: 18,
+          background: notice.type === 'success' ? '#eef6f2' : '#fef2f2',
+          color: notice.type === 'success' ? 'var(--teal-dark)' : '#b91c1c',
+          border: '1px solid ' + (notice.type === 'success' ? '#cde7db' : '#fecaca'),
+          fontSize: 13,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <span><strong>{notice.type === 'success' ? 'Success:' : 'Error:'}</strong> {notice.message}</span>
+          <button className="icon-button" onClick={() => setNotice(null)} style={{ padding: 2 }}>
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flex: 1, minWidth: 260 }}>
+          <input
+            type="text"
+            placeholder="Search by email, UUID, or role..."
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            style={{
+              padding: '8px 12px',
+              borderRadius: 8,
+              border: '1px solid var(--border)',
+              width: '100%',
+              maxWidth: 360,
+              fontSize: 13
+            }}
+          />
+          <span style={{ fontSize: 13, color: 'var(--muted)', whiteSpace: 'nowrap' }}>
+            {filteredUsers.length} user{filteredUsers.length === 1 ? '' : 's'}
+          </span>
+        </div>
+        <button
+          className="secondary-button"
+          onClick={fetchUsers}
+          disabled={loading}
+          style={{ padding: '8px 14px', fontSize: 13 }}
+        >
+          Refresh User Directory
+        </button>
+      </div>
+
+      <div className="surface-card full-card" style={{ padding: 0, overflow: 'hidden' }}>
+        {loading ? (
+          <div style={{ padding: 32, textAlign: 'center', color: 'var(--muted)' }}>
+            Loading user directory...
+          </div>
+        ) : error ? (
+          <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c' }}>
+            {error}
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div style={{ padding: 32, textAlign: 'center', color: 'var(--muted)' }}>
+            No registered users found matching filter.
+          </div>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'left' }}>
+              <thead>
+                <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border)' }}>
+                  <th style={{ padding: '12px 16px', fontWeight: 600 }}>User Email & ID</th>
+                  <th style={{ padding: '12px 16px', fontWeight: 600 }}>Email Verification</th>
+                  <th style={{ padding: '12px 16px', fontWeight: 600 }}>Current Active Roles</th>
+                  <th style={{ padding: '12px 16px', fontWeight: 600 }}>Change Role</th>
+                  <th style={{ padding: '12px 16px', fontWeight: 600, textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map(user => {
+                  const currentSelected = selectedRoles[user.id] || (user.roles && user.roles.includes('ADMIN') ? 'ADMIN' : user.roles && user.roles.includes('DOCTOR') ? 'DOCTOR' : 'PATIENT');
+                  const isCurrentRoleSame = user.roles && user.roles.includes(currentSelected);
+                  return (
+                    <tr key={user.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--ink)' }}>{user.email}</div>
+                        <div style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'monospace', marginTop: 2 }}>{user.id}</div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        {user.emailVerified ? (
+                          <span className="badge-tag normal" style={{ background: '#ecfdf5', color: '#065f46' }}>
+                            <CheckCircle size={12} weight="bold" /> Verified
+                          </span>
+                        ) : (
+                          <span className="badge-tag normal" style={{ background: '#fef3c7', color: '#92400e' }}>
+                            Pending Verification
+                          </span>
+                        )}
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                          {user.roles && user.roles.map(r => (
+                            <span
+                              key={r}
+                              className={'role-indicator-badge ' + r.toLowerCase()}
+                              style={{ padding: '2px 8px', fontSize: 11 }}
+                            >
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <select
+                          value={currentSelected}
+                          onChange={e => handleRoleChange(user.id, e.target.value)}
+                          style={{
+                            padding: '6px 10px',
+                            borderRadius: 6,
+                            border: '1px solid var(--border)',
+                            background: '#fff',
+                            fontSize: 12,
+                            fontWeight: 600,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <option value="PATIENT">PATIENT (Standard Patient Access)</option>
+                          <option value="DOCTOR">DOCTOR (Clinician Access)</option>
+                          <option value="ADMIN">ADMIN (Full Cluster Governance)</option>
+                        </select>
+                      </td>
+                      <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                        <button
+                          className="primary-button"
+                          disabled={savingId === user.id || isCurrentRoleSame}
+                          onClick={() => handleSaveRole(user)}
+                          style={{
+                            padding: '6px 14px',
+                            fontSize: 12,
+                            opacity: isCurrentRoleSame ? 0.5 : 1,
+                            cursor: isCurrentRoleSame ? 'default' : 'pointer'
+                          }}
+                        >
+                          {savingId === user.id ? 'Updating…' : isCurrentRoleSame ? 'Active' : 'Apply Role'}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </PageIntro>
+  );
+}
+
 // ADMIN DOCTOR ASSIGNMENT PAGE
 // ============================================================================
 function AdminDoctorAssignmentPage() {
@@ -3031,6 +3285,7 @@ function App() {
     if (activeRole === 'ADMIN') {
       return [
         { id: 'overview', label: 'Cluster Overview', icon: House },
+        { id: 'admin-roles', label: 'User Roles & Access', icon: UsersThree },
         { id: 'admin-links', label: 'Direct Tools & Swagger', icon: Link },
         { id: 'admin-cluster', label: 'Services & Observability', icon: ChartLineUp },
         { id: 'admin-assign', label: 'Doctor Assignments', icon: UsersThree },
@@ -3111,6 +3366,8 @@ function App() {
         return <PredictionsPage user={currentUser} isDoctor={activeRole === 'DOCTOR'} />;
       case 'doctor-patients':
         return <DoctorPatientDirectoryPage doctor={currentUser} />;
+      case 'admin-roles':
+        return <AdminUserRolesPage />;
       case 'admin-links':
         return <AdminDirectLinksPage />;
       case 'admin-cluster':
