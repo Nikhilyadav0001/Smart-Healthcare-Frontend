@@ -1,0 +1,1301 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Smart Healthcare Platform - Unified API Specification",
+    "description": "Consolidated interactive API documentation across all Smart Healthcare microservices: Auth, User Profile, Health Data, and ML Prediction.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Smart Healthcare Edge Reverse Proxy Gateway"
+    }
+  ],
+  "tags": [
+    {
+      "name": "1. Auth & Identity Service",
+      "description": "Registration, Verification, JWT Authentication, and OAuth2/OIDC Tokens (Port 8081)"
+    },
+    {
+      "name": "2. User Profile Service",
+      "description": "Patient Demographics, Clinical History, and Doctor Assignment (Port 8082)"
+    },
+    {
+      "name": "3. Health Data Service",
+      "description": "Longitudinal Biometric Vitals, Sensor Telemetry, and Lab Records (Port 8083)"
+    },
+    {
+      "name": "4. ML Prediction Service",
+      "description": "Cardiometabolic Risk Inference, Multi-Disease Scoring, and PDF Reports (Port 8085)"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "1. Auth & Identity Service"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": [
+          "1. Auth & Identity Service"
+        ],
+        "summary": "Returns the service name and status",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "get": {
+        "tags": [
+          "1. Auth & Identity Service"
+        ],
+        "operationId": "verifyEmail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/token": {
+      "post": {
+        "tags": [
+          "1. Auth & Identity Service"
+        ],
+        "summary": "OAuth2 / OIDC Token Endpoint (Issue JWT Access Token)",
+        "description": "Issues access tokens using authorization_code, refresh_token, or client_credentials grants.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token issued successfully"
+          }
+        }
+      }
+    },
+    "/oauth2/jwks": {
+      "get": {
+        "tags": [
+          "1. Auth & Identity Service"
+        ],
+        "summary": "JSON Web Key Set (JWKS Public Keys)",
+        "description": "Public RSA keys used by microservices to verify JWT digital signatures.",
+        "responses": {
+          "200": {
+            "description": "JWK Set with RSA public keys"
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "tags": [
+          "2. User Profile Service"
+        ],
+        "operationId": "me",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "2. User Profile Service"
+        ],
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/me": {
+      "get": {
+        "tags": [
+          "2. User Profile Service"
+        ],
+        "operationId": "me_1",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "2. User Profile Service"
+        ],
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/ping": {
+      "get": {
+        "tags": [
+          "2. User Profile Service"
+        ],
+        "summary": "Returns the service name and status",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/records": {
+      "get": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "summary": "Retrieve all historical health records for the patient",
+        "operationId": "getMyRecords",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patientId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HealthRecordResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "summary": "Record new patient clinical vitals and test results",
+        "operationId": "createRecord",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/records/{id}": {
+      "get": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "summary": "Get a specific clinical health record by its unique identifier",
+        "operationId": "getRecordById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/records/latest": {
+      "get": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "summary": "Get the most recent health record for the authenticated patient",
+        "operationId": "getLatestRecord",
+        "parameters": [
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patientId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthRecordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/ping": {
+      "get": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/patients/{patientId}/records": {
+      "get": {
+        "tags": [
+          "3. Health Data Service"
+        ],
+        "summary": "Doctor access to patient records with HIPAA access audit trail",
+        "operationId": "getPatientRecordsForDoctor",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Doctor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "doctor-system"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HealthRecordResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/predict": {
+      "post": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Evaluate risk for a single specific disease model",
+        "operationId": "predictSingle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SinglePredictionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/predict/all": {
+      "post": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Evaluate multi-disease risk (Diabetes, Heart Disease, Hypertension) and generate overall score",
+        "operationId": "predictAll",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MultiPredictionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/health": {
+      "get": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/{id}": {
+      "get": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Retrieve a specific prediction assessment by its ID",
+        "operationId": "getPrediction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MlPredictionEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/{id}/report": {
+      "get": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Download official clinical PDF report generated via go-service gRPC",
+        "operationId": "downloadReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/models": {
+      "get": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Get list of available ML models and optimized clinical decision thresholds",
+        "operationId": "getModels",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predictions/history/{patientId}": {
+      "get": {
+        "tags": [
+          "4. ML Prediction Service"
+        ],
+        "summary": "Retrieve historical predictions and recommendations for a patient",
+        "operationId": "getHistory",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MlPredictionEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 320,
+            "minLength": 0
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "PingResponse": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "VerifyEmailResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 0
+          }
+        }
+      },
+      "ProfileResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "assignedDoctorId": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateRecordRequest": {
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ageYears": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 125,
+            "minimum": 1
+          },
+          "sex": {
+            "type": "string"
+          },
+          "heightCm": {
+            "type": "number",
+            "format": "double",
+            "maximum": 260,
+            "minimum": 50
+          },
+          "weightKg": {
+            "type": "number",
+            "format": "double",
+            "maximum": 350,
+            "minimum": 20
+          },
+          "bmi": {
+            "type": "number",
+            "format": "double"
+          },
+          "systolicBp": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 260,
+            "minimum": 60
+          },
+          "diastolicBp": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 160,
+            "minimum": 40
+          },
+          "fastingGlucoseMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "hba1cPercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCholesterolMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "hdlMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "ldlMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "smokingStatus": {
+            "type": "string"
+          },
+          "activityLevel": {
+            "type": "string"
+          },
+          "hasHypertension": {
+            "type": "boolean"
+          },
+          "hasHeartDisease": {
+            "type": "boolean"
+          },
+          "familyHistoryDiabetes": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ageYears",
+          "diastolicBp",
+          "sex",
+          "systolicBp"
+        ]
+      },
+      "HealthRecordResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "patientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ageYears": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "heightCm": {
+            "type": "number",
+            "format": "double"
+          },
+          "weightKg": {
+            "type": "number",
+            "format": "double"
+          },
+          "bmi": {
+            "type": "number",
+            "format": "double"
+          },
+          "systolicBp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diastolicBp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fastingGlucoseMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "hba1cPercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCholesterolMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "hdlMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "ldlMgDl": {
+            "type": "number",
+            "format": "double"
+          },
+          "smokingStatus": {
+            "type": "string"
+          },
+          "activityLevel": {
+            "type": "string"
+          },
+          "hasHypertension": {
+            "type": "boolean"
+          },
+          "hasHeartDisease": {
+            "type": "boolean"
+          },
+          "familyHistoryDiabetes": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PatientFeaturesDto": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "bmi": {
+            "type": "number",
+            "format": "double"
+          },
+          "smoking": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fatigue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "palpitations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "headache": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dizziness": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cough": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wheezing": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "jaundice": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nausea": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "computedBmi": {
+            "type": "number",
+            "format": "double"
+          },
+          "height_cm": {
+            "type": "number",
+            "format": "double"
+          },
+          "weight_kg": {
+            "type": "number",
+            "format": "double"
+          },
+          "systolic_bp": {
+            "type": "number",
+            "format": "double"
+          },
+          "diastolic_bp": {
+            "type": "number",
+            "format": "double"
+          },
+          "glucose_mg_dl": {
+            "type": "number",
+            "format": "double"
+          },
+          "cholesterol_mg_dl": {
+            "type": "number",
+            "format": "double"
+          },
+          "resting_heart_rate": {
+            "type": "number",
+            "format": "double"
+          },
+          "physical_activity": {
+            "type": "string"
+          },
+          "family_history_diabetes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "family_history_heart_disease": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "frequent_urination": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "excessive_thirst": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unexplained_weight_loss": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "blurred_vision": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chest_pain": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shortness_of_breath": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "abdominal_discomfort": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SinglePredictionRequest": {
+        "type": "object",
+        "properties": {
+          "disease": {
+            "type": "string"
+          },
+          "features": {
+            "$ref": "#/components/schemas/PatientFeaturesDto"
+          },
+          "patient_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patient_name": {
+            "type": "string"
+          },
+          "patient_email": {
+            "type": "string"
+          }
+        }
+      },
+      "DiseaseRiskReport": {
+        "type": "object",
+        "properties": {
+          "disease": {
+            "type": "string"
+          },
+          "probability": {
+            "type": "number",
+            "format": "double"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_at_risk": {
+            "type": "boolean"
+          },
+          "risk_level": {
+            "type": "string"
+          },
+          "top_factors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PredictionResponse": {
+        "type": "object",
+        "properties": {
+          "predictions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DiseaseRiskReport"
+            }
+          },
+          "summary": {
+            "type": "string"
+          },
+          "prediction_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patient_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patient_name": {
+            "type": "string"
+          },
+          "patient_email": {
+            "type": "string"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "overall_health_score": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "MultiPredictionRequest": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "$ref": "#/components/schemas/PatientFeaturesDto"
+          },
+          "patient_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patient_name": {
+            "type": "string"
+          },
+          "patient_email": {
+            "type": "string"
+          }
+        }
+      },
+      "MlPredictionEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patientName": {
+            "type": "string"
+          },
+          "disease": {
+            "type": "string"
+          },
+          "probability": {
+            "type": "number",
+            "format": "double"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double"
+          },
+          "isAtRisk": {
+            "type": "boolean"
+          },
+          "riskLevel": {
+            "type": "string"
+          },
+          "topFactors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "features": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter JWT Bearer token obtained from /oauth2/token or /auth/register"
+      }
+    }
+  }
+}

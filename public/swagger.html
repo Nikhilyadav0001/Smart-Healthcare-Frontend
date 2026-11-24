@@ -139,12 +139,13 @@
     window.onload = function() {
       window.ui = SwaggerUIBundle({
         urls: [
+          { url: "/openapi.json", name: "🌟 All Services Unified (20 Endpoints)" },
           { url: "/swagger/auth/v3/api-docs", name: "🔐 Auth Service (Port 8081)" },
           { url: "/swagger/profile/v3/api-docs", name: "👤 User Profile Service (Port 8082)" },
           { url: "/swagger/health/v3/api-docs", name: "💓 Health Data Service (Port 8083)" },
           { url: "/swagger/prediction/v3/api-docs", name: "🧠 Prediction Service (Port 8085)" }
         ],
-        "urls.primaryName": "🔐 Auth Service (Port 8081)",
+        "urls.primaryName": "🌟 All Services Unified (20 Endpoints)",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
