@@ -602,6 +602,13 @@ function PublicLoginPage({ onLoginSuccess, onRegister, onBackHome }) {
         return;
       }
 
+      // If backend responded with an error (e.g. 403 unverified email, 401 invalid password)
+      const errData = await res.json().catch(() => null);
+      if (errData && errData.error) {
+        setError(errData.error);
+        return;
+      }
+
       // Check if credentials match any standard demo personas
       if (email === 'admin@smarthealth.internal' || email === 'admin') {
         onLoginSuccess(PERSONAS.ADMIN);
