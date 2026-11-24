@@ -796,28 +796,15 @@ function AdminDirectLinksPage() {
       url: '/prometheus/',
       badge: 'Metrics Engine',
       desc: 'Direct Prometheus query engine, TSDB time-series metrics, scraping target statuses, and evaluation rules.'
-    },
-    {
-      title: 'Unified Swagger API Hub',
-      port: 'Proxy: /swagger/',
-      url: '/swagger/',
-      badge: 'All Endpoints',
-      desc: 'Centralized interactive Swagger UI portal allowing inspection and testing of all endpoints across all 4 microservices.'
     }
   ];
 
   const swaggerLinks = [
     {
-      service: 'Unified Swagger Hub (All Microservices)',
-      port: 'All Services',
-      url: '/swagger/',
-      endpoints: 'Interactive spec switcher with Auth, Profile, Health, and Prediction endpoints'
-    },
-    {
-      service: 'Auth Service',
-      port: 'Proxy: /swagger/auth/',
+      service: 'Auth Service (Authentication, Tokens & Demo API)',
+      port: 'Proxy: /swagger/auth/ | Host: 8081',
       url: '/swagger/auth/',
-      endpoints: '/auth/register, /auth/verify-email, /auth/login, /ping, /oauth2/jwks'
+      endpoints: '/auth/register, /auth/verify-email, /auth/me, /auth/demo/*, /oauth2/token, /oauth2/jwks, /ping'
     },
     {
       service: 'User Profile Service',
